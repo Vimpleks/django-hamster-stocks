@@ -11,4 +11,5 @@ app_name = 'threads'
 
 urlpatterns = [
     path('', views.index, name='index'),
+    path('manufacturers/', views.manufacturer, name='manufacturers'),
 ]

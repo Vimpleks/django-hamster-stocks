@@ -1,9 +1,19 @@
 from django.db import models
 
 
-class Manufacturers(models.Model):
-    name = models.CharField(max_length=100, unique=True, blank=False, null=False, verbose_name='Наименование')
-    is_public = models.BooleanField(default=True, verbose_name='Общий')
+class Manufacturer(models.Model):
+    """
+    Производитель нитки.
+    Отдельная модель, чтобы не хранить производителя как строку в каждой нитке.
+    """
+    name = models.CharField(
+        'Наименование',
+        max_length=50,
+        unique=True,
+        blank=False,
+        null=False
+    )
+    is_public = models.BooleanField('Общий', default=True)
 
     class Meta:
         db_table = 'manufacturer'
@@ -14,17 +24,37 @@ class Manufacturers(models.Model):
         return self.name
 
 
-class Threads(models.Model):
-    article = models.CharField(max_length=50, blank=False, null=False, verbose_name='Артикул')
-    name = models.CharField(max_length=200, blank=True, null=True, verbose_name='Наименование')
-    manufacturer = models.ForeignKey(Manufacturers, on_delete=models.CASCADE, verbose_name='Производитель')
-    image = models.ImageField(upload_to='threads_images/', blank=True, null=True, verbose_name='Изображение')
-    is_public = models.BooleanField(default=True, verbose_name='Общий')
+class Thread(models.Model):
+    """
+    Нитка — центральная модель проекта.
+
+    Связана с Manufacturer через ForeignKey (много ниток → один производитель).
+    """
+    article = models.CharField('Артикул', max_length=50, blank=False, null=False)
+    name = models.CharField('Наименование', max_length=100, blank=True, null=True)
+    manufacturer = models.ForeignKey(
+        Manufacturer,
+        on_delete=models.CASCADE,
+        verbose_name='Производитель'
+    )
+    image = models.ImageField(
+        'Изображение',
+        upload_to='threads_images/',
+        blank=True,
+        null=True
+    )
+    is_public = models.BooleanField(verbose_name='Общий', default=True)
 
     class Meta:
         db_table = 'thread'
         verbose_name = 'Нитку'
         verbose_name_plural = 'Нитки'
+        constraints = [
+            models.UniqueConstraint(
+                fields=['article', 'manufacturer'],
+                name='unique_thread_article_manufacturer',
+            )
+        ]
 
     def __str__(self):
-        return f'{self.manufacturer} {self.name}'
+        return f'{self.manufacturer} {self.article}'
