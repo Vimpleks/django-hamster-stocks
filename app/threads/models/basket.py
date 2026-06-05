@@ -7,7 +7,7 @@ class Basket(models.Model):
     """
 
     """
-    owner = models.ForeignKey(User, on_delete=models.CASCADE, unique=True, verbose_name='Владелец')
+    owner = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name='Владелец')
 
     class Meta:
         db_table = 'basket'
@@ -30,3 +30,9 @@ class BasketThread(models.Model):
         db_table = 'basket_thread'
         verbose_name = 'Корзину - Нитку'
         verbose_name_plural = 'Корзины - Нитки'
+        constraints = [
+            models.UniqueConstraint(
+                fields=['basket', 'thread'],
+                name='unique_basket_thread',
+            )
+        ]

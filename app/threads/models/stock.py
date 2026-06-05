@@ -7,7 +7,7 @@ class Stock(models.Model):
     """
 
     """
-    owner = models.ForeignKey(User, on_delete=models.CASCADE, unique=True, verbose_name='Владелец')
+    owner = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name='Владелец')
 
     class Meta:
         db_table = 'stock'
@@ -30,3 +30,9 @@ class StockThread(models.Model):
         db_table = 'stock_thread'
         verbose_name = 'Запас - Нитка'
         verbose_name_plural = 'Запасы - Нитки'
+        constraints = [
+            models.UniqueConstraint(
+                fields=['stock', 'thread'],
+                name='unique_stock_thread',
+            )
+        ]

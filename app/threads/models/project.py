@@ -46,3 +46,9 @@ class ProjectThread(models.Model):
         db_table = 'project_thread'
         verbose_name = 'Проект - Нитка'
         verbose_name_plural = 'Проекты - Нитки'
+        constraints = [
+            models.UniqueConstraint(
+                fields=['project', 'thread'],
+                name='unique_project_thread',
+            )
+        ]
