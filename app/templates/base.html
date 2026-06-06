@@ -15,15 +15,17 @@
         <a class="navbar-brand" href="/">Запасы Хомяка</a>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Запасы</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Список покупок</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Проекты</a>
-                </li>
+                {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'threads:stock' %}">Запасы</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Список покупок</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Проекты</a>
+                    </li>
+                {% endif %}
             </ul>
             <ul class="navbar-nav ms-auto">
                 {% if not user.is_authenticated %}

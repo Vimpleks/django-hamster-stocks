@@ -1,78 +1,29 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Запасы Хомяка</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f5f5f5;
-        }
-        .header {
-            background-color: #2c3e50;
-            color: white;
-            padding: 15px 0;
-            text-align: left;
-        }
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        h1 {
-            text-align: center;
-            margin-top: 40px;
-            color: #34495e;
-        }
-        .card {
-            background-color: white;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        .card h2 {
-            margin-top: 0;
-            color: #2c3e50;
-        }
-        .card p {
-            color: #7f8c8d;
-        }
-        .logout {
-            float: right;
-            color: #e74c3c;
-            text-decoration: none;
-            margin-top: 10px;
-        }
-    </style>
-</head>
-<body>
-    <div class="header">
-<!--        <img src="static\logo\hamster_logo.png" alt="Hamster Stocks Logo" style="height: 20px;">-->
-        Запасы Хомяка
-        <a href="#" class="logout">Log Out</a>
-    </div>
-    <div class="container">
-        <h1>Добро пожаловать, Евгения!</h1>
-        <div class="card">
-            <a href={% url 'threads:manufacturers' %}><h2>Справочник ниток</h2></a>
-            <p>Все нитки мира</p>
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="container mt-5">
+        <div>
+            <h2 class="text-center mb-3">Добро пожаловать{% if user.is_authenticated %}, {{ user.username }} {% endif %}!</h2>
         </div>
-        <div class="card">
-            <a href="#"><h2>Коробка с нитками</h2></a>
-            <p>Все нитки, что есть у тебя в запасах</p>
-        </div>
-        <div class="card">
-            <a href="#"><h2>Список покупок</h2></a>
-            <p>Запланируй покупку</p>
-        </div>
-        <div class="card">
-            <a href="#"><h2>Проекты</h2></a>
-            <p>Отслеживай свои проекты</p>
+        <div class="row justify-content-center">
+            <div class="col-md-4 bg-white">
+                <div class="card py-2 px-4 my-2">
+                    <a href="{% url 'threads:manufacturers' %}" class="text-reset text-decoration-none" ><h3>Справочник ниток</h3></a>
+                    <p>Все нитки мира</p>
+                </div>
+                <div class="card py-2 px-4 my-2">
+                    <a href="{% url 'threads:stock' %}" class="text-reset text-decoration-none"><h3>Коробка с нитками</h3></a>
+                    <p>Все нитки, что есть у тебя в запасах</p>
+                </div>
+                <div class="card py-2 px-4 my-2">
+                    <a href="#" class="text-reset text-decoration-none"><h3>Список покупок</h3></a>
+                    <p>Запланируй покупку</p>
+                </div>
+                <div class="card py-2 px-4 my-2">
+                    <a href="#" class="text-reset text-decoration-none"><h3>Проекты</h3></a>
+                    <p>Отслеживай свои проекты</p>
+                </div>
+            </div>
         </div>
     </div>
-</body>
-</html>
+{% endblock %}
