@@ -6,7 +6,7 @@
             <div class="col-md-4 bg-white">
                 {% for manufacturer in manufacturers %}
                     <div class="card text-center py-2 px-4 my-2">
-                        <a href="{% url 'threads:manufacturer_detail' manufacturer.slug %}" class="text-reset text-decoration-none"><h3>{{ manufacturer.name }}</h3></a>
+                        <a href="{% url 'threads:thread_add_stock' manufacturer.slug %}" class="text-reset text-decoration-none"><h3>{{ manufacturer.name }}</h3></a>
                     </div>
                 {% endfor %}
             </div>

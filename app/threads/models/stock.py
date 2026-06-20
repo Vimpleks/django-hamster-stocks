@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models import Sum, Count
+
 from .threads import Thread
 
 
@@ -16,6 +18,14 @@ class Stock(models.Model):
 
     def __str__(self):
         return f'{self.id} - {self.owner.username}'
+
+    def total_color(self):
+        result = StockThread.objects.filter(stock=self).aggregate(count=Count('thread'))['count']
+        return result if result is not None else 0
+
+    def total_quantity(self):
+        result = StockThread.objects.filter(stock=self).aggregate(sum=Sum('quantity'))['sum']
+        return result if result is not None else 0
 
 
 class StockThread(models.Model):
