@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="container mt-5">
+        <div>
+            <h3 class="text-center mb-1">Список покупок</h3>
+        </div>
+        <div>
+            <h5 class="text-center mb-1">Общее количество ниток: {{ total_color }}</h5>
+        </div>
+        <div>
+            <h5 class="text-center mb-1">Общее количество мотков: {{ total_quantity }}</h5>
+        </div>
+        <div>
+            <form action="{% url 'threads:manufacturers_basket' %}" method="get">
+                <button type="submit" class="btn btn-outline-secondary d-grid col-6 mx-auto">
+                    Добавить нитку
+                </button>
+            </form>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-8 my-2">
+                <form method="get">
+                    <div class="row justify-content-center">
+                        <div class="col-8">
+                            <input type="text" class="form-control" placeholder="Фильтр по артикулу"
+                                   name="article"
+                                   value="{% if article %}{{ article }}{% endif %}"
+                                   aria-describedby="basic-addon1">
+                        </div>
+                        <div class="col-auto">
+                            <button type="submit" class="btn btn-outline-secondary">
+                                Применить
+                            </button>
+                        </div>
+                        <div class="col-auto">
+                            <a href="{% url 'threads:basket' %}"
+                            class="btn btn-outline-secondary" role="button">
+                                Сбросить
+                            </a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-8 bg-white">
+                {% for basket_thread in basket_threads %}
+                    <div class="card p-2 my-2">
+                        <div class="row g-0 align-items-center">
+                            <div class="col-8">
+                                {% if basket_thread.thread.image %}
+                                    <img src="{{ basket_thread.thread.image.url }}" class="card-img-left"
+                                         style="width: 50px; height: 50px;" alt="...">
+                                {% else %}
+                                    <img src="{% static "images/Not found image.jpg" %}" class="card-img-left"
+                                         style="width: 50px; height: 50px;" alt="...">
+                                {% endif %}
+                                {{ basket_thread.thread.manufacturer }}
+                                {{ basket_thread.thread.article }}{% if basket_thread.thread.name %}:
+                                    {{ basket_thread.thread.name }}{% endif %}
+                            </div>
+                            <div class="col-auto">
+                                Количество: {{ basket_thread.quantity }}
+                                <div class="row g-1">
+                                    <div class="col-auto">
+                                        <form action="{% url 'threads:thread_basket_update' basket_thread.id %}"
+                                              method="get">
+                                            <button type="submit" class="btn btn-outline-secondary btn-sm">
+                                                Изменить
+                                            </button>
+                                        </form>
+                                    </div>
+                                    <div class="col-auto">
+                                        <form action="#" method="post">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-outline-secondary btn-sm">
+                                                В запасы
+                                            </button>
+                                        </form>
+                                    </div>
+                                    <div class="col-auto">
+                                        <form action="{% url 'threads:thread_basket_delete' basket_thread.id %}"
+                                              method="post">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-outline-secondary btn-sm"
+                                                    onclick="return confirm('Вы хотите удалить нитку?');">Удалить
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% empty %}
+                    <div class="row">
+                        <h5 class="text-center mt-3">Ниток нет</h5>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
