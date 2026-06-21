@@ -21,8 +21,27 @@
         </div>
         <div class="row justify-content-center">
             <div class="col-8 my-2">
-                <input type="text" class="form-control" placeholder="Фильтр" aria-label="Username"
-                       aria-describedby="basic-addon1">
+                <form method="get">
+                    <div class="row justify-content-center">
+                        <div class="col-8">
+                            <input type="text" class="form-control" placeholder="Фильтр по артикулу"
+                                   name="article"
+                                   value="{% if article %}{{ article }}{% endif %}"
+                                   aria-describedby="basic-addon1">
+                        </div>
+                        <div class="col-auto">
+                            <button type="submit" class="btn btn-outline-secondary">
+                                Применить
+                            </button>
+                        </div>
+                        <div class="col-auto">
+                            <a href="{% url 'threads:stock' %}"
+                            class="btn btn-outline-secondary" role="button">
+                                Сбросить
+                            </a>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
         <div class="row justify-content-center">
@@ -75,8 +94,9 @@
                         </div>
                     </div>
                 {% empty %}
-                    <!-- Облагородить вывод -->
-                    <p>Ниток нет.</p>
+                    <div class="row">
+                        <h5 class="text-center mt-3">Ниток нет</h5>
+                    </div>
                 {% endfor %}
             </div>
         </div>

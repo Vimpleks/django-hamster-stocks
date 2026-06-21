@@ -8,8 +8,27 @@
         </div>
         <div class="row justify-content-center">
             <div class="col-8 my-2">
-                <input type="text" class="form-control" placeholder="Фильтр" aria-label="Username"
-                       aria-describedby="basic-addon1">
+                <form method="get">
+                    <div class="row justify-content-center">
+                        <div class="col-8">
+                            <input type="text" class="form-control" placeholder="Фильтр по артикулу"
+                                   name="article"
+                                   value="{% if article %}{{ article }}{% endif %}"
+                                   aria-describedby="basic-addon1">
+                        </div>
+                        <div class="col-auto">
+                            <button type="submit" class="btn btn-outline-secondary">
+                                Применить
+                            </button>
+                        </div>
+                        <div class="col-auto">
+                            <a href="{% url 'threads:thread_add_stock' manufacturer.slug %}"
+                            class="btn btn-outline-secondary" role="button">
+                                Сбросить
+                            </a>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
         <div class="row justify-content-center">
@@ -29,7 +48,7 @@
                                 {{ thread.article }}{% if thread.name %}: {{ thread.name }}{% endif %}
                             </div>
                             <div class="col-4">
-                                <form action="{% url 'threads:thread_add_stock' manufacturer.slug %}" method="post">
+                                <form method="post">
                                     {% csrf_token %}
                                     <input type="hidden" class="form-control" id="id_thread"
                                            name="thread" value="{{ thread.id }}">

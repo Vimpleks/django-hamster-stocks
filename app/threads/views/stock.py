@@ -15,11 +15,16 @@ def stock(request):
     total_color = stock_user.total_color()
     total_quantity = stock_user.total_quantity()
 
+    filter_article = request.GET.get('article')
+    if filter_article:
+        stock_threads = stock_threads.filter(thread__article__icontains=filter_article)
+
     return render(request, 'threads/stock.html', context={
-        'title': '?????',
+        'title': 'Запасы хомяка - Твои запасы',
         'stock_threads': stock_threads,
         'total_color': total_color,
         'total_quantity': total_quantity,
+        'article': filter_article,
     })
 
 
@@ -27,6 +32,7 @@ def stock(request):
 def manufacturers_stock(request):
     manufacturers = Manufacturer.objects.all()
     return render(request, 'threads/manufacturers_stock.html', {
+        'title': 'Запасы хомяка - Производители',
         'manufacturers': manufacturers
     })
 
@@ -35,6 +41,11 @@ def manufacturers_stock(request):
 def thread_stock_add(request, manufacturer_slug):
     manufacturer = Manufacturer.objects.get(slug=manufacturer_slug)
     threads = Thread.objects.select_related('manufacturer').filter(manufacturer=manufacturer).order_by('article')
+
+    filter_article = request.GET.get('article')
+    if filter_article:
+        threads = threads.filter(article__icontains=filter_article)
+
     if request.method == 'POST':
         form = ThreadQuantityForm(data=request.POST)
         if form.is_valid():
@@ -54,10 +65,11 @@ def thread_stock_add(request, manufacturer_slug):
         form = ThreadQuantityForm()
 
     context = {
-        'title': '?????',
+        'title': f'Запасы хомяка - Нитки {manufacturer}',
         'manufacturer': manufacturer,
         'threads': threads,
         'form': form,
+        'article': filter_article,
     }
     return render(request, 'threads/threads_stock_add.html', context)
 
@@ -77,7 +89,7 @@ def thread_stock_update(request, stock_thread_id):
         form = ThreadUpdateStockForm()
 
     context = {
-        'title': '?????',
+        'title': f'Запасы хомяка - {stock_thread.thread.manufacturer.name} {stock_thread.thread.article}',
         'stock_thread': stock_thread,
         'form': form,
     }
