@@ -45,7 +45,6 @@ class Thread(models.Model):
         null=True
     )
     is_public = models.BooleanField(verbose_name='Общий', default=True)
-    slug = models.SlugField('Slug', unique=True)
 
     class Meta:
         db_table = 'thread'

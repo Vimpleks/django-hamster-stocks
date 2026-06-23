@@ -44,8 +44,10 @@
                                     <img src="{% static "images/Not found image.jpg" %}" class="card-img-left"
                                          style="width: 50px; height: 50px;" alt="...">
                                 {% endif %}
+                                <a href="{% url 'threads:thread_detail' thread.id %}" class="text-reset text-decoration-none">
                                 {{ thread.manufacturer }}
                                 {{ thread.article }}{% if thread.name %}: {{ thread.name }}{% endif %}
+                                </a>
                             </div>
                         </div>
                     </div>

@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6 mb-4 bg-white">
+                <h4 class="text-center mb-1">{{ thread.manufacturer.name }} {{ thread.article }}</h4>
+                <div class="card p-2 my-2">
+                    <div class="row g-0 align-items-center">
+                        <div class="col-8">
+                            <h5 class="mx-2">Запасы</h5>
+                        </div>
+                        <div class="col-auto {% if stock_count == 0 %} text-danger
+                                {% else %} text-success {% endif %}">
+                            Количество: {{ stock_count }}
+                        </div>
+                    </div>
+                </div>
+                <div class="card p-2 my-2">
+                    <div class="row g-0 align-items-center">
+                        <div class="col-8">
+                            <h5 class="mx-2">Корзина</h5>
+                        </div>
+                        <div class="col-auto {% if basket_count == 0 %} text-danger
+                                {% else %} text-success {% endif %}">
+                            Количество: {{ basket_count }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <h4 class="text-center mb-1">Проекты</h4>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-6 bg-white">
+                {% for project_thread in project_threads %}
+                    <div class="card p-2 my-2">
+                        <div class="row g-0 align-items-center">
+                            <div class="col-8">
+                                <h5 class="mx-2">{{ project_thread.project.name }}</h5>
+                            </div>
+                            <div class="col-auto {% if project_thread.quantity == 0 %} text-danger
+                                {% else %} text-success {% endif %}">
+                                Количество: {{ project_thread.quantity }}
+                            </div>
+                        </div>
+                    </div>
+                {% empty %}
+                    <div class="row">
+                        <h5 class="text-center mt-3">Проектов нет</h5>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

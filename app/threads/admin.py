@@ -5,11 +5,12 @@ from threads.models import Manufacturer, Thread, Stock, StockThread, Project, Pr
 @admin.register(Manufacturer)
 class ManufacturersAdmin(admin.ModelAdmin):
     list_display = ['name']
+    prepopulated_fields = {'slug': ('name',)}
 
 
 @admin.register(Thread)
 class ThreadsAdmin(admin.ModelAdmin):
-    list_display = ['article', 'name', 'manufacturer']
+    list_display = ['id', 'article', 'name', 'manufacturer']
     search_fields = ['article', 'name']
 
 
@@ -20,12 +21,12 @@ class StockAdmin(admin.ModelAdmin):
 
 @admin.register(StockThread)
 class StockThreadAdmin(admin.ModelAdmin):
-    list_display = ['stock', 'thread']
+    list_display = ['id', 'stock', 'thread', 'quantity']
 
 
 @admin.register(Project)
 class ProjectAdmin(admin.ModelAdmin):
-    list_display = ['name', 'owner']
+    list_display = ['id', 'name', 'owner']
 
 
 @admin.register(ProjectThread)
@@ -36,6 +37,7 @@ class ProjectThreadAdmin(admin.ModelAdmin):
 @admin.register(Basket)
 class BasketAdmin(admin.ModelAdmin):
     list_display = ['id', 'owner']
+
 
 @admin.register(BasketThread)
 class BasketThreadAdmin(admin.ModelAdmin):

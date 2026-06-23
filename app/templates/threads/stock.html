@@ -36,7 +36,7 @@
                         </div>
                         <div class="col-auto">
                             <a href="{% url 'threads:stock' %}"
-                            class="btn btn-outline-secondary" role="button">
+                               class="btn btn-outline-secondary" role="button">
                                 Сбросить
                             </a>
                         </div>
@@ -57,9 +57,12 @@
                                     <img src="{% static "images/Not found image.jpg" %}" class="card-img-left"
                                          style="width: 50px; height: 50px;" alt="...">
                                 {% endif %}
-                                {{ stock_thread.thread.manufacturer }}
-                                {{ stock_thread.thread.article }}{% if stock_thread.thread.name %}:
-                                    {{ stock_thread.thread.name }}{% endif %}
+                                <a href="{% url 'threads:thread_detail' stock_thread.thread.id %}"
+                                   class="text-reset text-decoration-none">
+                                    {{ stock_thread.thread.manufacturer }}
+                                    {{ stock_thread.thread.article }}{% if stock_thread.thread.name %}:
+                                        {{ stock_thread.thread.name }}{% endif %}
+                                </a>
                             </div>
                             <div class="col-auto">
                                 Количество: {{ stock_thread.quantity }}
