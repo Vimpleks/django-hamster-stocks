@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="container mt-5">
+        <div>
+            <h3 class="text-center mb-1">{{ manufacturer.name }}</h3>
+        </div>
+{#        <div class="row justify-content-center">#}
+{#            <div class="col-8 my-2">#}
+{#                <form method="get">#}
+{#                    <div class="row justify-content-center">#}
+{#                        <div class="col-8">#}
+{#                            <input type="text" class="form-control" placeholder="Фильтр по артикулу"#}
+{#                                   name="article"#}
+{#                                   value="{% if article %}{{ article }}{% endif %}"#}
+{#                                   aria-describedby="basic-addon1">#}
+{#                            <input type="hidden" name="project_id" value="{{ project_id }}">#}
+{#                        </div>#}
+{#                        <div class="col-auto">#}
+{#                            <button type="submit" class="btn btn-outline-secondary">#}
+{#                                Применить#}
+{#                            </button>#}
+{#                        </div>#}
+{#                        <div class="col-auto">#}
+{#                            <a href="{% url 'threads:add_thread_project' manufacturer.slug %}"#}
+{#                               class="btn btn-outline-secondary" role="button">#}
+{#                                Сбросить#}
+{#                            </a>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </form>#}
+{#            </div>#}
+{#        </div>#}
+        <div class="row justify-content-center">
+            <div class="col-md-8 bg-white">
+                {% for thread in threads %}
+                    <div class="card p-2 my-2">
+                        <div class="row g-0 align-items-center">
+                            <div class="col-8">
+                                {% if thread.image %}
+                                    <img src="{{ thread.image.url }}" class="card-img-left"
+                                         style="width: 50px; height: 50px;" alt="...">
+                                {% else %}
+                                    <img src="{% static "images/Not found image.jpg" %}" class="card-img-left"
+                                         style="width: 50px; height: 50px;" alt="...">
+                                {% endif %}
+                                {{ thread.manufacturer }}
+                                {{ thread.article }}{% if thread.name %}: {{ thread.name }}{% endif %}
+                            </div>
+                            <div class="col-4">
+                                <form method="post">
+                                    {% csrf_token %}
+                                    <input type="hidden" class="form-control" id="id_thread"
+                                           name="thread" value="{{ thread.id }}">
+                                    <div class="row align-items-center">
+                                        <div class="col-auto">
+                                            <label for="id_quantity" class="form-label">Количество</label>
+                                        </div>
+                                        <div class="col-4">
+                                            <input type="number" class="form-control" id="id_quantity"
+                                                   name="quantity">
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-outline-secondary btn-sm">
+                                        Добавить
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

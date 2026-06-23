@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6 bg-white p-4 mb-4 mx-3 rounded custom-shadow">
+                <h2 class="text-center mb-4">Создание проекта</h2>
+                <form action="{% url "threads:add_project" %}" method="post">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <label for="id_name" class="form-label">Название проекта*</label>
+                            <input type="text" class="form-control" id="id_name"
+                                   value="{% if form.name.value %} {{ form.name.value }} {% endif %}"
+                                   name="name"
+                                   maxlength="100"
+                                   placeholder="Введи название проекта" required>
+                            {% if form.name.errors %}
+                                <div class="alert alert-danger mt-2">{{ form.name.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <label for="id_description" class="form-label">Описание проекта</label>
+                            <input type="text" class="form-control" id="id_description"
+                                   value="{% if form.description.value %} {{ form.description.value }} {% endif %}"
+                                   name="description"
+                                   maxlength="500"
+                                   placeholder="Введи описание проекта">
+                            {% if form.description.errors %}
+                                <div class="alert alert-danger mt-2">{{ form.description.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <label for="id_designer" class="form-label">Дизайнер (или производитель) проекта</label>
+                            <input type="text" class="form-control" id="id_designer"
+                                   value="{% if form.designer.value %} {{ form.designer.value }} {% endif %}"
+                                   name="designer"
+                                   maxlength="100"
+                                   placeholder="Введи дизайнера или производителя проекта">
+                            {% if form.designer.errors %}
+                                <div class="alert alert-danger mt-2">{{ form.designer.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <label for="id_status" class="form-label">Статус проекта</label>
+                            <select name="status" class="form-select" id="id_status">
+                                <option value="not started" selected>не начат</option>
+                                <option value="kitted">собран</option>
+                                <option value="in progress">в работе</option>
+                                <option value="complete">завершен</option>
+                            </select>
+                        </div>
+                        <div>
+                            <input type="hidden" class="form-control" id="id_owner"
+                                   name="owner" value="{{ request.user.id }}">
+                        </div>
+                    </div>
+                    <button type="submit"
+                            class="btn btn-secondary btn-block">Создать проект
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

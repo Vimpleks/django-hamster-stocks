@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="container mt-5">
+        <div>
+            <h3 class="text-center mb-1">Проекты</h3>
+        </div>
+        <div>
+            <h5 class="text-center mb-1">Общее количество проектов: </h5>
+        </div>
+        <div>
+            <form action="{% url 'threads:add_project' %}" method="get">
+                <button type="submit" class="btn btn-outline-secondary d-grid col-6 mx-auto">
+                    Добавить проект
+                </button>
+            </form>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-8 my-2">
+                <form method="get">
+                    <div class="row justify-content-center">
+                        <div class="col-8">
+                            <input type="text" class="form-control" placeholder="Фильтр по названию"
+                                   name="name"
+                                   value="{% if name %}{{ name }}{% endif %}"
+                                   aria-describedby="basic-addon1">
+                        </div>
+                        <div class="col-auto">
+                            <button type="submit" class="btn btn-outline-secondary">
+                                Применить
+                            </button>
+                        </div>
+                        <div class="col-auto">
+                            <a href="{% url 'threads:projects' %}"
+                               class="btn btn-outline-secondary" role="button">
+                                Сбросить
+                            </a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-8 bg-white">
+                {% for project in projects %}
+                    <div class="card p-2 my-2">
+                        <div class="row g-0 align-items-center">
+                            <div class="col-10">
+                                <div class="row g-0 px-2 align-items-center">
+                                    <h5>{{ project.name }}</h5>
+                                </div>
+                                <div class="row g-0 px-2 align-items-center">
+                                    Статус: {{ project.get_status_display }}
+                                </div>
+                            </div>
+                            <div class="col-auto">
+                                <a href="{% url 'threads:project_detail' project.id %}"
+                                   class="btn btn-outline-secondary" role="button">
+                                    Подробнее
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% empty %}
+                    <div class="row">
+                        <h5 class="text-center mt-3">Проектов нет</h5>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

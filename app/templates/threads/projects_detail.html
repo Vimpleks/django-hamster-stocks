@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6 mb-4 bg-white">
+                <h4 class="mb-1">{{ project.name }}</h4>
+                <p class="mb-1"><b>Описание:</b> {% if project.description %}
+                    {{ project.description }}
+                {% endif %} </p>
+                <p class="mb-1"><b>Дизайнер:</b> {% if project.designer %}
+                    {{ project.designer }}
+                {% endif %} </p>
+                <p class="mb-1"><b>Статус:</b> {{ project.get_status_display }}</p>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-6 d-flex justify-content-center gap-3 mb-4">
+                <form action="{% url 'threads:edit_project' project.id %}" method="get" class="flex-grow-1">
+                    <button type="submit" class="btn btn-outline-secondary w-100">
+                        Изменить проект
+                    </button>
+                </form>
+                <form action="{% url 'threads:delete_project' project.id %}" method="post" class="flex-grow-1">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-outline-secondary w-100"
+                            onclick="return confirm('Вы хотите удалить проект?');">
+                        Удалить проект
+                    </button>
+                </form>
+            </div>
+        </div>
+        <div>
+            <h4 class="text-center mt-4 mb-1">Нитки проекта</h4>
+        </div>
+        <div>
+            <h5 class="text-center mb-1">Общее количество ниток: {{ total_color }}</h5>
+        </div>
+        <div>
+            <form action="{% url 'threads:manufacturers_project' %}" method="get">
+                <input type="hidden" name="project_id" value="{{ project.id }}">
+                <button type="submit" class="btn btn-outline-secondary d-grid col-6 mx-auto">
+                    Добавить нитку
+                </button>
+            </form>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-8 bg-white">
+                {% for project_thread in project_threads %}
+                    <div class="card p-2 my-2">
+                        <div class="row g-0 align-items-center">
+                            <div class="col-8">
+                                {% if project_thread.thread.image %}
+                                    <img src="{{ project_thread.thread.image.url }}" class="card-img-left"
+                                         style="width: 50px; height: 50px;" alt="...">
+                                {% else %}
+                                    <img src="{% static "images/Not found image.jpg" %}" class="card-img-left"
+                                         style="width: 50px; height: 50px;" alt="...">
+                                {% endif %}
+                                <a href="{% url 'threads:thread_detail' project_thread.thread.id %}"
+                                   class="text-reset text-decoration-none">
+                                    {{ project_thread.thread.manufacturer }}
+                                    {{ project_thread.thread.article }}{% if project_thread.thread.name %}:
+                                        {{ project_thread.thread.name }}{% endif %}
+                                </a>
+                            </div>
+                            <div class="col-auto">
+                                Количество: {{ project_thread.quantity }}
+                                <div class="row g-1">
+                                    <div class="col-auto">
+                                        <form action="{% url 'threads:update_thread_project' project_thread.id %}"
+                                              method="get">
+                                            <button type="submit" class="btn btn-outline-secondary btn-sm">
+                                                Изменить
+                                            </button>
+                                        </form>
+                                    </div>
+                                    <div class="col-auto">
+                                        <form action="#" method="post">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-outline-secondary btn-sm">
+                                                В корзину
+                                            </button>
+                                        </form>
+                                    </div>
+                                    <div class="col-auto">
+                                        <form action="{% url 'threads:delete_thread_project' project_thread.id %}"
+                                              method="post">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-outline-secondary btn-sm"
+                                                    onclick="return confirm('Вы хотите удалить нитку?');">Удалить
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row g-0 mt-1 align-items-center">
+                            <div class="col d-flex justify-content-end mx-3">
+                                <span class="{% if project_thread.stock_quantity == 0 %} text-danger
+                                {% else %} text-success {% endif %}">
+                                    Ниток в запасах({{ project_thread.stock_quantity }})
+                                </span>
+                            </div>
+                            <div class="col d-flex justify-content-start mx-3">
+                                <span class="{% if project_thread.basket_quantity == 0 %} text-danger
+                                {% else %} text-success {% endif %}">
+                                    Ниток в корзине({{ project_thread.basket_quantity }})
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                {% empty %}
+                    <div class="row">
+                        <h5 class="text-center mt-3">Ниток нет</h5>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
