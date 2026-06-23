@@ -2,31 +2,34 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 
 from threads.models import Manufacturer, Thread, StockThread, BasketThread, ProjectThread
+from threads.services import filter_by_field
 
 
 def manufacturer(request):
     manufacturers = Manufacturer.objects.all()
+    source = request.GET.get('source', 'index')
+    project = request.GET.get('project_id')
     return render(request, 'threads/manufacturers.html', {
         'title': 'Запасы хомяка - Производители',
         'manufacturers': manufacturers,
+        'source': source,
+        'project': project,
     })
 
 
 def manufacturer_detail(request, manufacturer_slug):
     manufacturer = Manufacturer.objects.get(slug=manufacturer_slug)
     threads = Thread.objects.select_related('manufacturer').filter(manufacturer=manufacturer).order_by('article')
-    filter_article = request.GET.get('article')
-    if filter_article:
-        threads = threads.filter(article__icontains=filter_article)
 
-    context = {
+    filter_value = request.GET.get('article')
+    threads = filter_by_field(threads, filter_value, 'article__icontains')
+
+    return render(request, 'threads/threads.html', {
         'title': f'Запасы хомяка - Нитки {manufacturer.name}',
         'manufacturer': manufacturer,
         'threads': threads,
-        'article': filter_article,
-    }
-
-    return render(request, 'threads/threads.html', context)
+        'filter_value': filter_value,
+    })
 
 
 @login_required
@@ -41,12 +44,10 @@ def thread_detail(request, thread_id):
 
     project_threads = ProjectThread.objects.filter(thread=thread, project__owner=request.user)
 
-    context = {
+    return render(request, 'threads/thread_detail.html', {
         'title': f'Запасы хомяка - {thread.manufacturer.name} {thread.article}',
         'thread': thread,
         'stock_count': stock_count,
         'basket_count': basket_count,
         'project_threads': project_threads,
-    }
-
-    return render(request, 'threads/thread_detail.html', context)
+    })

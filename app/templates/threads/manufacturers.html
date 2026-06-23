@@ -5,9 +5,36 @@
         <div class="row justify-content-center">
             <div class="col-md-4 bg-white">
                 {% for manufacturer in manufacturers %}
-                    <div class="card text-center py-2 px-4 my-2">
-                        <a href="{% url 'threads:manufacturer_detail' manufacturer.slug %}" class="text-reset text-decoration-none"><h3>{{ manufacturer.name }}</h3></a>
-                    </div>
+                    {% if source == 'index' %}
+                        <form action="{% url 'threads:manufacturer_detail' manufacturer.slug %}" method="get">
+                            <button type="submit"
+                                    class="btn btn-outline-secondary btn-lg d-grid col-8 mx-auto my-2">
+                                {{ manufacturer.name }}
+                            </button>
+                        </form>
+                    {% elif source == 'stock' %}
+                        <form action="{% url 'threads:add_thread_stock' manufacturer.slug %}" method="get">
+                            <button type="submit"
+                                    class="btn btn-outline-secondary btn-lg d-grid col-8 mx-auto my-2">
+                                {{ manufacturer.name }}
+                            </button>
+                        </form>
+                    {% elif source == 'basket' %}
+                        <form action="{% url 'threads:add_thread_basket' manufacturer.slug %}" method="get">
+                            <button type="submit"
+                                    class="btn btn-outline-secondary btn-lg d-grid col-8 mx-auto my-2">
+                                {{ manufacturer.name }}
+                            </button>
+                        </form>
+                    {% elif source == 'project' %}
+                        <form action="{% url 'threads:add_thread_project' manufacturer.slug %}" method="get">
+                            <input type="hidden" name="project_id" value="{{ project }}">
+                            <button type="submit"
+                                    class="btn btn-outline-secondary btn-lg d-grid col-8 mx-auto my-2">
+                                {{ manufacturer.name }}
+                            </button>
+                        </form>
+                    {% endif %}
                 {% endfor %}
             </div>
         </div>

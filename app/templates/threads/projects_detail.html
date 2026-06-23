@@ -38,8 +38,9 @@
             <h5 class="text-center mb-1">Общее количество ниток: {{ total_color }}</h5>
         </div>
         <div>
-            <form action="{% url 'threads:manufacturers_project' %}" method="get">
+            <form action="{% url 'threads:manufacturers' %}" method="get">
                 <input type="hidden" name="project_id" value="{{ project.id }}">
+                <input type="hidden" name="source" value="project">
                 <button type="submit" class="btn btn-outline-secondary d-grid col-6 mx-auto">
                     Добавить нитку
                 </button>
@@ -50,7 +51,7 @@
                 {% for project_thread in project_threads %}
                     <div class="card p-2 my-2">
                         <div class="row g-0 align-items-center">
-                            <div class="col-8">
+                            <div class="col-9">
                                 {% if project_thread.thread.image %}
                                     <img src="{{ project_thread.thread.image.url }}" class="card-img-left"
                                          style="width: 50px; height: 50px;" alt="...">
@@ -73,14 +74,6 @@
                                               method="get">
                                             <button type="submit" class="btn btn-outline-secondary btn-sm">
                                                 Изменить
-                                            </button>
-                                        </form>
-                                    </div>
-                                    <div class="col-auto">
-                                        <form action="#" method="post">
-                                            {% csrf_token %}
-                                            <button type="submit" class="btn btn-outline-secondary btn-sm">
-                                                В корзину
                                             </button>
                                         </form>
                                     </div>
