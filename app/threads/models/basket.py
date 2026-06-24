@@ -1,13 +1,14 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.db.models import Sum, Count
 
 from .threads import Thread
 
 
 class Basket(models.Model):
     """
-
+    Список покупок (корзина) - хранилище для ниток, которые надо купить.
+    У каждого пользователя свой список покупок.
+    Связана с User через OneToOneField (один пользователь → одна корзина).
     """
     owner = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name='Владелец')
 
@@ -19,18 +20,10 @@ class Basket(models.Model):
     def __str__(self):
         return f'{self.id} - {self.owner.username}'
 
-    def total_color(self):
-        result = BasketThread.objects.filter(basket=self).aggregate(count=Count('thread'))['count']
-        return result if result is not None else 0
-
-    def total_quantity(self):
-        result = BasketThread.objects.filter(basket=self).aggregate(sum=Sum('quantity'))['sum']
-        return result if result is not None else 0
-
 
 class BasketThread(models.Model):
     """
-
+    Модель для хранения количества ниток в корзине.
     """
     basket = models.ForeignKey(Basket, on_delete=models.CASCADE, verbose_name='Корзина')
     thread = models.ForeignKey(Thread, on_delete=models.CASCADE, verbose_name='Нитка')

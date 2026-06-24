@@ -1,13 +1,13 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.db.models import Count
 
 from .threads import Thread
 
 
 class Project(models.Model):
     """
-
+    Проект - хранилище для ниток, которые используются для вышивания набора или схемы.
+    Связана с User через ForeignKey (один пользователь → много проектов).
     """
     STATUS_CHOICES = [
         ('not started', 'не начат'),
@@ -35,14 +35,10 @@ class Project(models.Model):
     def __str__(self):
         return f'{self.name} - {self.owner.username}'
 
-    def total_color(self):
-        result = ProjectThread.objects.filter(project=self).aggregate(count=Count('thread'))['count']
-        return result if result is not None else 0
-
 
 class ProjectThread(models.Model):
     """
-
+    Модель для хранения количества ниток в проекте.
     """
     project = models.ForeignKey(Project, on_delete=models.CASCADE, verbose_name='Проект')
     thread = models.ForeignKey(Thread, on_delete=models.CASCADE, verbose_name='Нитка')

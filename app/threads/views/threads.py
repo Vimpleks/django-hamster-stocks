@@ -6,6 +6,9 @@ from threads.services import filter_by_field
 
 
 def manufacturer(request):
+    """
+    Страница со списком производителей ниток.
+    """
     manufacturers = Manufacturer.objects.all()
     source = request.GET.get('source', 'index')
     project = request.GET.get('project_id')
@@ -18,6 +21,9 @@ def manufacturer(request):
 
 
 def manufacturer_detail(request, manufacturer_slug):
+    """
+    Список ниток выбранного производителя.
+    """
     manufacturer = Manufacturer.objects.get(slug=manufacturer_slug)
     threads = Thread.objects.select_related('manufacturer').filter(manufacturer=manufacturer).order_by('article')
 
@@ -34,6 +40,11 @@ def manufacturer_detail(request, manufacturer_slug):
 
 @login_required
 def thread_detail(request, thread_id):
+    """
+    Детальная информация о нитке.
+    Количество ее в запасах и списке покупок (корзине).
+    Проекты, в которых необходима эта нитка, с количеством.
+    """
     thread = Thread.objects.get(id=thread_id)
 
     stock_thread = StockThread.objects.filter(id=thread_id, stock__owner=request.user)

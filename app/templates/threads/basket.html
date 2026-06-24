@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load threads_tags %}
 
 {% block content %}
     <div class="container mt-5">
@@ -10,7 +11,7 @@
             <h5 class="text-center mb-1">Общее количество ниток: {{ total_color }}</h5>
         </div>
         <div>
-            <h5 class="text-center mb-1">Общее количество мотков: {{ total_quantity }}</h5>
+            <h5 class="text-center mb-1">Общее количество мотков: {{ total_quantity|remove_trailing_zeros }}</h5>
         </div>
         <div>
             <form action="{% url 'threads:manufacturers' %}" method="get">
@@ -66,7 +67,7 @@
                                 </a>
                             </div>
                             <div class="col-auto">
-                                Количество: {{ basket_thread.quantity }}
+                                Количество: {{ basket_thread.quantity|remove_trailing_zeros }}
                                 <div class="row g-1">
                                     <div class="col-auto">
                                         <form action="{% url 'threads:update_thread_basket' basket_thread.id %}"

@@ -3,12 +3,18 @@ from django.contrib.auth.models import User
 
 
 class UserLoginForm(AuthenticationForm):
+    """
+    Форма для аутентификации пользователя.
+    """
     class Meta:
         model = User
         fields = ('username', 'password')
 
 
 class UserRegistrationForm(UserCreationForm):
+    """
+    Форма для регистрации пользователя.
+    """
     class Meta:
         model = User
         fields = (
@@ -20,6 +26,9 @@ class UserRegistrationForm(UserCreationForm):
 
 
 class ProfileForm(UserChangeForm):
+    """
+    Форма для просмотра или изменения информации о пользователе.
+    """
     class Meta:
         model = User
         fields = (

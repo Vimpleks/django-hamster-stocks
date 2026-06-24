@@ -3,20 +3,24 @@
 {% block content %}
     <div class="container mt-5">
         <div>
-            <h2 class="text-center mb-3">Добро пожаловать{% if user.is_authenticated %}, {{ user.username }} {% endif %}!</h2>
+            <h2 class="text-center mb-3">Добро пожаловать{% if user.is_authenticated %}{% if user.first_name %},
+                {{ user.first_name }}{% else %}, {{ user.username }}{% endif %}{% endif %}!</h2>
         </div>
         <div class="row justify-content-center">
             <div class="col-md-4 bg-white">
                 <div class="card py-2 px-4 my-2">
-                    <a href="{% url 'threads:manufacturers' %}" class="text-reset text-decoration-none" ><h3>Справочник ниток</h3></a>
+                    <a href="{% url 'threads:manufacturers' %}" class="text-reset text-decoration-none"><h3>Справочник
+                        ниток</h3></a>
                     <p>Все нитки мира</p>
                 </div>
                 <div class="card py-2 px-4 my-2">
-                    <a href="{% url 'threads:stock' %}" class="text-reset text-decoration-none"><h3>Коробка с нитками</h3></a>
+                    <a href="{% url 'threads:stock' %}" class="text-reset text-decoration-none"><h3>Коробка с
+                        нитками</h3></a>
                     <p>Все нитки, что есть у тебя в запасах</p>
                 </div>
                 <div class="card py-2 px-4 my-2">
-                    <a href="{% url 'threads:basket' %}" class="text-reset text-decoration-none"><h3>Список покупок</h3></a>
+                    <a href="{% url 'threads:basket' %}" class="text-reset text-decoration-none"><h3>Список покупок</h3>
+                    </a>
                     <p>Запланируй покупку</p>
                 </div>
                 <div class="card py-2 px-4 my-2">

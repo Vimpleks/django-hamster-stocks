@@ -31,7 +31,7 @@ class ProjectAdmin(admin.ModelAdmin):
 
 @admin.register(ProjectThread)
 class ProjectThreadAdmin(admin.ModelAdmin):
-    list_display = ['project', 'thread']
+    list_display = ['id', 'project', 'thread', 'quantity']
 
 
 @admin.register(Basket)
@@ -41,4 +41,4 @@ class BasketAdmin(admin.ModelAdmin):
 
 @admin.register(BasketThread)
 class BasketThreadAdmin(admin.ModelAdmin):
-    list_display = ['basket', 'thread']
+    list_display = ['id', 'basket', 'thread', 'quantity']

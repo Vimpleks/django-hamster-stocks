@@ -9,7 +9,10 @@
                 <div class="card p-2 my-2">
                     <div class="row g-0 align-items-center">
                         <div class="col-8">
-                            <h5 class="mx-2">Запасы</h5>
+                            <a href="{% url 'threads:stock' %}"
+                               class="text-reset text-decoration-none">
+                                <h5 class="mx-2">Запасы</h5>
+                            </a>
                         </div>
                         <div class="col-auto {% if stock_count == 0 %} text-danger
                                 {% else %} text-success {% endif %}">
@@ -20,7 +23,10 @@
                 <div class="card p-2 my-2">
                     <div class="row g-0 align-items-center">
                         <div class="col-8">
-                            <h5 class="mx-2">Корзина</h5>
+                            <a href="{% url 'threads:basket' %}"
+                               class="text-reset text-decoration-none">
+                                <h5 class="mx-2">Список покупок</h5>
+                            </a>
                         </div>
                         <div class="col-auto {% if basket_count == 0 %} text-danger
                                 {% else %} text-success {% endif %}">
@@ -39,7 +45,10 @@
                     <div class="card p-2 my-2">
                         <div class="row g-0 align-items-center">
                             <div class="col-8">
-                                <h5 class="mx-2">{{ project_thread.project.name }}</h5>
+                                <a href="{% url 'threads:project_detail' project_thread.project.id %}"
+                                   class="text-reset text-decoration-none">
+                                    <h5 class="mx-2">{{ project_thread.project.name }}</h5>
+                                </a>
                             </div>
                             <div class="col-auto {% if project_thread.quantity == 0 %} text-danger
                                 {% else %} text-success {% endif %}">

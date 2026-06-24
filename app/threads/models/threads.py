@@ -13,7 +13,6 @@ class Manufacturer(models.Model):
         blank=False,
         null=False
     )
-    is_public = models.BooleanField('Общий', default=True)
     slug = models.SlugField('Slug', unique=True)
 
     class Meta:
@@ -28,10 +27,9 @@ class Manufacturer(models.Model):
 class Thread(models.Model):
     """
     Нитка — центральная модель проекта.
-
     Связана с Manufacturer через ForeignKey (много ниток → один производитель).
     """
-    article = models.CharField('Артикул', max_length=50, blank=False, null=False)
+    article = models.CharField('Артикул', max_length=50, blank=False, null=False, db_index=True)
     name = models.CharField('Наименование', max_length=100, blank=True, null=True)
     manufacturer = models.ForeignKey(
         Manufacturer,
@@ -44,7 +42,6 @@ class Thread(models.Model):
         blank=True,
         null=True
     )
-    is_public = models.BooleanField(verbose_name='Общий', default=True)
 
     class Meta:
         db_table = 'thread'

@@ -1,13 +1,14 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.db.models import Sum, Count
 
 from .threads import Thread
 
 
 class Stock(models.Model):
     """
-
+    Коробка с нитками (запас) - хранилище для ниток, которые есть в запасе.
+    У каждого пользователя своя коробка с нитками.
+    Связана с User через OneToOneField (один пользователь → одна коробка).
     """
     owner = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name='Владелец')
 
@@ -19,18 +20,10 @@ class Stock(models.Model):
     def __str__(self):
         return f'{self.id} - {self.owner.username}'
 
-    def total_color(self):
-        result = StockThread.objects.filter(stock=self).aggregate(count=Count('thread'))['count']
-        return result if result is not None else 0
-
-    def total_quantity(self):
-        result = StockThread.objects.filter(stock=self).aggregate(sum=Sum('quantity'))['sum']
-        return result if result is not None else 0
-
 
 class StockThread(models.Model):
     """
-
+    Модель для хранения количества ниток в коробке с нитками (в запасе).
     """
     stock = models.ForeignKey(Stock, on_delete=models.CASCADE, verbose_name='Запас')
     thread = models.ForeignKey(Thread, on_delete=models.CASCADE, verbose_name='Нитка')

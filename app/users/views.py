@@ -9,6 +9,9 @@ from threads.models import Stock, Basket
 
 
 def login(request):
+    """
+    Страница аутентификации пользователя.
+    """
     if request.method == 'POST':
         form = UserLoginForm(data=request.POST)
         if form.is_valid():
@@ -29,6 +32,9 @@ def login(request):
 
 
 def registration(request):
+    """
+    Страница регистрации пользователя.
+    """
     if request.method == 'POST':
         form = UserRegistrationForm(data=request.POST)
         if form.is_valid():
@@ -46,8 +52,13 @@ def registration(request):
     }
     return render(request, 'users/registration.html', context)
 
+
 @login_required
 def profile(request):
+    """
+    Страница профиля пользователя.
+    Просмотр или изменение информации о пользователе.
+    """
     if request.method == 'POST':
         form = ProfileForm(data=request.POST, instance=request.user)
         if form.is_valid():
@@ -61,7 +72,11 @@ def profile(request):
     }
     return render(request, 'users/profile.html', context)
 
+
 @login_required
 def logout(request):
+    """
+    Выход пользователя.
+    """
     auth.logout(request)
     return HttpResponseRedirect(reverse('threads:index'))

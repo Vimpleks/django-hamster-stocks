@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load threads_tags %}
 
 {% block content %}
     <div class="container mt-5">
@@ -67,7 +68,7 @@
                                 </a>
                             </div>
                             <div class="col-auto">
-                                Количество: {{ project_thread.quantity }}
+                                Количество: {{ project_thread.quantity|remove_trailing_zeros }}
                                 <div class="row g-1">
                                     <div class="col-auto">
                                         <form action="{% url 'threads:update_thread_project' project_thread.id %}"
@@ -93,13 +94,13 @@
                             <div class="col d-flex justify-content-end mx-3">
                                 <span class="{% if project_thread.stock_quantity == 0 %} text-danger
                                 {% else %} text-success {% endif %}">
-                                    Ниток в запасах({{ project_thread.stock_quantity }})
+                                    Ниток в запасах({{ project_thread.stock_quantity|remove_trailing_zeros }})
                                 </span>
                             </div>
                             <div class="col d-flex justify-content-start mx-3">
                                 <span class="{% if project_thread.basket_quantity == 0 %} text-danger
                                 {% else %} text-success {% endif %}">
-                                    Ниток в корзине({{ project_thread.basket_quantity }})
+                                    Ниток в корзине({{ project_thread.basket_quantity|remove_trailing_zeros }})
                                 </span>
                             </div>
                         </div>
