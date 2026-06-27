@@ -14,7 +14,7 @@ def stock(request):
     """
     Страница коробки с нитками (запаса) со списком, хранящихся в ней ниток.
     """
-    stock_user = Stock.objects.get(owner=request.user)
+    stock_user = get_object_or_404(Stock, owner=request.user)
     stock_threads = StockThread.objects.select_related('thread__manufacturer').filter(stock=stock_user).order_by(
         'thread__manufacturer', 'thread__article')
 
@@ -38,7 +38,7 @@ def add_thread_stock(request, manufacturer_slug):
     """
     Страница добавления нитки в запас.
     """
-    manufacturer = Manufacturer.objects.get(slug=manufacturer_slug)
+    manufacturer = get_object_or_404(Manufacturer, slug=manufacturer_slug)
     threads = Thread.objects.select_related('manufacturer').filter(manufacturer=manufacturer).order_by('article')
 
     filter_value = request.GET.get('article')

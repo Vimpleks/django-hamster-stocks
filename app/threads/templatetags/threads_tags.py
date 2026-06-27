@@ -13,4 +13,4 @@ def remove_trailing_zeros(value):
     if value is None:
         return ''
     value = Decimal(str(value))
-    return str(value.normalize())
+    return format(value.normalize(), 'f')

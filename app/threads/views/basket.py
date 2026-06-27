@@ -14,7 +14,7 @@ def basket(request):
     """
     Страница списка покупок (корзины) со списком, хранящихся в ней ниток.
     """
-    basket_user = Basket.objects.get(owner=request.user)
+    basket_user = get_object_or_404(Basket, owner=request.user)
     basket_threads = BasketThread.objects.select_related('thread__manufacturer').filter(basket=basket_user).order_by(
         'thread__manufacturer', 'thread__article')
 
@@ -38,7 +38,7 @@ def add_thread_basket(request, manufacturer_slug):
     """
     Страница добавления нитки в корзину.
     """
-    manufacturer = Manufacturer.objects.get(slug=manufacturer_slug)
+    manufacturer = get_object_or_404(Manufacturer, slug=manufacturer_slug)
     threads = Thread.objects.select_related('manufacturer').filter(manufacturer=manufacturer).order_by('article')
 
     filter_value = request.GET.get('article')

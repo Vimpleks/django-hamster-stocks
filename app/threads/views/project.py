@@ -32,7 +32,7 @@ def project_detail(request, project_id):
     """
     Детальная информация по проекту со списком ниток, который необходим для его вышивания.
     """
-    project = Project.objects.get(id=project_id)
+    project = get_object_or_404(Project, pk=project_id)
 
     stock_subquery = StockThread.objects.filter(
         thread=OuterRef('thread'),
@@ -122,7 +122,7 @@ def add_thread_project(request, manufacturer_slug):
     """
     Страница добавления нитки в проект.
     """
-    manufacturer = Manufacturer.objects.get(slug=manufacturer_slug)
+    manufacturer = get_object_or_404(Manufacturer, slug=manufacturer_slug)
     threads = Thread.objects.select_related('manufacturer').filter(manufacturer=manufacturer).order_by('article')
     project_id = request.GET.get('project_id')
 

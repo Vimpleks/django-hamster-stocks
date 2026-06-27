@@ -76,8 +76,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'hamster_stocks',
-        'USER': 'hamster',
-        'PASSWORD': 'hamster2026',
+        'USER': 'postgres',
+        'PASSWORD': '123456789',
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }
@@ -120,9 +120,9 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR.joinpath('media')
-# MEDIA_ROOT = [BASE_DIR /'media']
 
 LOGIN_URL = '/user/login'

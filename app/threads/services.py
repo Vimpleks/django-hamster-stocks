@@ -54,10 +54,10 @@ def add_thread_in_storage(storage: Type[Model], quantity: float, thread_id: int,
     :param filter_value: экземпляр модели хранилища (Stock, Basket и т.п.)
     """
     try:
-        project_stock = storage.objects.get(**{lookup_field: filter_value}, thread=thread_id)
-        quantity_add = project_stock.quantity + quantity
-        project_stock.quantity = quantity_add
-        project_stock.save(update_fields=['quantity'])
+        storage_thread = storage.objects.get(**{lookup_field: filter_value}, thread=thread_id)
+        quantity_add = storage_thread.quantity + quantity
+        storage_thread.quantity = quantity_add
+        storage_thread.save(update_fields=['quantity'])
     except storage.DoesNotExist:
         thread = Thread.objects.get(id=thread_id)
         storage.objects.create(**{lookup_field: filter_value}, thread=thread, quantity=quantity)

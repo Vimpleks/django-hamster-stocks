@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load threads_tags %}
 
 {% block content %}
     <div class="container mt-5">
@@ -16,7 +17,7 @@
                         </div>
                         <div class="col-auto {% if stock_count == 0 %} text-danger
                                 {% else %} text-success {% endif %}">
-                            Количество: {{ stock_count }}
+                            Количество: {{ stock_count|remove_trailing_zeros }}
                         </div>
                     </div>
                 </div>
@@ -30,7 +31,7 @@
                         </div>
                         <div class="col-auto {% if basket_count == 0 %} text-danger
                                 {% else %} text-success {% endif %}">
-                            Количество: {{ basket_count }}
+                            Количество: {{ basket_count|remove_trailing_zeros }}
                         </div>
                     </div>
                 </div>
@@ -52,7 +53,7 @@
                             </div>
                             <div class="col-auto {% if project_thread.quantity == 0 %} text-danger
                                 {% else %} text-success {% endif %}">
-                                Количество: {{ project_thread.quantity }}
+                                Количество: {{ project_thread.quantity|remove_trailing_zeros }}
                             </div>
                         </div>
                     </div>

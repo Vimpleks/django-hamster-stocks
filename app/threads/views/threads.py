@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 
 from threads.models import Manufacturer, Thread, StockThread, BasketThread, ProjectThread
@@ -24,7 +24,7 @@ def manufacturer_detail(request, manufacturer_slug):
     """
     Список ниток выбранного производителя.
     """
-    manufacturer = Manufacturer.objects.get(slug=manufacturer_slug)
+    manufacturer = get_object_or_404(Manufacturer, slug=manufacturer_slug)
     threads = Thread.objects.select_related('manufacturer').filter(manufacturer=manufacturer).order_by('article')
 
     filter_value = request.GET.get('article')
@@ -45,13 +45,13 @@ def thread_detail(request, thread_id):
     Количество ее в запасах и списке покупок (корзине).
     Проекты, в которых необходима эта нитка, с количеством.
     """
-    thread = Thread.objects.get(id=thread_id)
+    thread = get_object_or_404(Thread, id=thread_id)
 
-    stock_thread = StockThread.objects.filter(id=thread_id, stock__owner=request.user)
-    stock_count = stock_thread[0].quantity if stock_thread else 0
+    stock_thread = StockThread.objects.filter(thread=thread, stock__owner=request.user).first()
+    stock_count = stock_thread.quantity if stock_thread else 0
 
-    basket_thread = BasketThread.objects.filter(id=thread_id, basket__owner=request.user)
-    basket_count = basket_thread[0].quantity if basket_thread else 0
+    basket_thread = BasketThread.objects.filter(thread=thread, basket__owner=request.user).first()
+    basket_count = basket_thread.quantity if basket_thread else 0
 
     project_threads = ProjectThread.objects.filter(thread=thread, project__owner=request.user)
 
