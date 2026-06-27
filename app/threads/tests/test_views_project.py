@@ -289,7 +289,7 @@ def test_add_thread_project_post_success(logged_in_client, manufacturer, second_
         'thread': second_thread.id,
         'quantity': 5.5,
     }
-    url= reverse('threads:add_thread_project', kwargs={'manufacturer_slug': manufacturer.slug})
+    url = reverse('threads:add_thread_project', kwargs={'manufacturer_slug': manufacturer.slug})
 
     # Act
     response = client.post(url, data=data, QUERY_STRING=f"project_id={project.id}", follow=False)
