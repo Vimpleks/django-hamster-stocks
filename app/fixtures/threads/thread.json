@@ -1,0 +1,167 @@
+[
+  {
+    "model": "threads.thread",
+    "pk": 1,
+    "fields": {
+      "article": "3100",
+      "manufacturer": 1,
+      "image": "threads_images/Owlforest_3100.png"
+    }
+  },
+  {
+    "model": "threads.thread",
+    "pk": 2,
+    "fields": {
+      "article": "3114",
+      "manufacturer": 1,
+      "image": "threads_images/Owlforest_3114.png"
+    }
+  },
+  {
+    "model": "threads.thread",
+    "pk": 3,
+    "fields": {
+      "article": "3209",
+      "manufacturer": 1,
+      "image": "threads_images/Owlforest_3209.png"
+    }
+  },
+  {
+    "model": "threads.thread",
+    "pk": 4,
+    "fields": {
+      "article": "3315",
+      "manufacturer": 1,
+      "image": "threads_images/Owlforest_3315.png"
+    }
+  },
+  {
+    "model": "threads.thread",
+    "pk": 5,
+    "fields": {
+      "article": "3316",
+      "manufacturer": 1,
+      "image": "threads_images/Owlforest_3316.png"
+    }
+  },
+  {
+    "model": "threads.thread",
+    "pk": 6,
+    "fields": {
+      "article": "3421",
+      "manufacturer": 1,
+      "image": "threads_images/Owlforest_3421.png"
+    }
+  },
+  {
+    "model": "threads.thread",
+    "pk": 7,
+    "fields": {
+      "article": "3503",
+      "manufacturer": 1,
+      "image": "threads_images/Owlforest_3503.png"
+    }
+  },
+  {
+    "model": "threads.thread",
+    "pk": 8,
+    "fields": {
+      "article": "3515",
+      "manufacturer": 1,
+      "image": "threads_images/Owlforest_3515.png"
+    }
+  },
+  {
+    "model": "threads.thread",
+    "pk": 9,
+    "fields": {
+      "article": "3611",
+      "manufacturer": 1,
+      "image": "threads_images/Owlforest_3611.png"
+    }
+  },
+  {
+    "model": "threads.thread",
+    "pk": 10,
+    "fields": {
+      "article": "3613",
+      "manufacturer": 1,
+      "image": "threads_images/Owlforest_3613.png"
+    }
+  },
+  {
+    "model": "threads.thread",
+    "pk": 11,
+    "fields": {
+      "article": "0037",
+      "manufacturer": 2,
+      "image": "threads_images/Gamma_0037.png"
+    }
+  },
+  {
+    "model": "threads.thread",
+    "pk": 12,
+    "fields": {
+      "article": "0042",
+      "manufacturer": 2,
+      "image": "threads_images/Gamma_0042.png"
+    }
+  },
+  {
+    "model": "threads.thread",
+    "pk": 13,
+    "fields": {
+      "article": "0055",
+      "manufacturer": 2,
+      "image": "threads_images/Gamma_0055.png"
+    }
+  },
+  {
+    "model": "threads.thread",
+    "pk": 14,
+    "fields": {
+      "article": "0319",
+      "manufacturer": 2,
+      "image": "threads_images/Gamma_0319.png"
+    }
+  },
+  {
+    "model": "threads.thread",
+    "pk": 15,
+    "fields": {
+      "article": "0856",
+      "manufacturer": 2,
+      "image": "threads_images/Gamma_0856.png"
+    }
+  },
+  {
+    "model": "threads.thread",
+    "pk": 16,
+    "fields": {
+      "article": "310",
+      "name": "Black",
+      "manufacturer": 3,
+      "image": ""
+    }
+  },
+  {
+    "model": "threads.thread",
+    "pk": 17,
+    "fields": {
+      "article": "B5200",
+      "name": "Snow White",
+      "manufacturer": 3,
+      "image": ""
+    }
+  },
+  {
+    "model": "threads.thread",
+    "pk": 18,
+    "fields": {
+      "article": "718",
+      "name": "Plum",
+      "manufacturer": 3,
+      "image": ""
+    }
+  }
+]

@@ -1,0 +1,26 @@
+[
+  {
+    "model": "threads.manufacturer",
+    "pk": 1,
+    "fields": {
+      "name": "Owlforest",
+      "slug": "owlforest"
+    }
+  },
+  {
+    "model": "threads.manufacturer",
+    "pk": 2,
+    "fields": {
+      "name": "Gamma",
+      "slug": "gamma"
+    }
+  },
+  {
+    "model": "threads.manufacturer",
+    "pk": 3,
+    "fields": {
+      "name": "DMC",
+      "slug": "dmc"
+    }
+  }
+]
