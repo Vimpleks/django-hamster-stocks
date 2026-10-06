@@ -69,7 +69,7 @@ def update_thread_basket(request, basket_thread_id):
     """
     Страница изменения количества нитки в корзине.
     """
-    basket_thread = get_object_or_404(BasketThread, pk=basket_thread_id)
+    basket_thread = get_object_or_404(BasketThread, pk=basket_thread_id, basket__owner=request.user)
 
     if request.method == 'POST':
         form = ThreadUpdateBasketForm(data=request.POST)
@@ -93,7 +93,7 @@ def delete_thread_basket(request, basket_thread_id):
     """
     Удаление нитки из корзины.
     """
-    basket_thread = get_object_or_404(BasketThread, pk=basket_thread_id)
+    basket_thread = get_object_or_404(BasketThread, pk=basket_thread_id, basket__owner=request.user)
 
     if request.method == 'POST':
         basket_thread.delete()

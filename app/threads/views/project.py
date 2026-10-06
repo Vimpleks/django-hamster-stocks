@@ -32,7 +32,7 @@ def project_detail(request, project_id):
     """
     Детальная информация по проекту со списком ниток, который необходим для его вышивания.
     """
-    project = get_object_or_404(Project, pk=project_id)
+    project = get_object_or_404(Project, pk=project_id, owner=request.user)
 
     stock_subquery = StockThread.objects.filter(
         thread=OuterRef('thread'),
@@ -70,7 +70,9 @@ def add_project(request):
     if request.method == 'POST':
         form = ProjectForm(data=request.POST)
         if form.is_valid():
-            form.save()
+            project = form.save(commit=False)
+            project.owner = request.user
+            project.save()
             return HttpResponseRedirect(reverse('threads:projects'))
     else:
         form = ProjectForm()
@@ -86,7 +88,7 @@ def edit_project(request, project_id):
     """
     Страница изменения информации о проекте.
     """
-    project = get_object_or_404(Project, pk=project_id)
+    project = get_object_or_404(Project, pk=project_id, owner=request.user)
 
     if request.method == 'POST':
         form = ProjectForm(data=request.POST, instance=project)
@@ -108,7 +110,7 @@ def delete_project(request, project_id):
     """
     Удаление проекта.
     """
-    project = get_object_or_404(Project, pk=project_id)
+    project = get_object_or_404(Project, pk=project_id, owner=request.user)
 
     if request.method == 'POST':
         project.delete()
@@ -131,7 +133,7 @@ def add_thread_project(request, manufacturer_slug):
         if form.is_valid():
             thread_id = form.cleaned_data['thread']
             quantity = abs(form.cleaned_data['quantity'])
-            project = Project.objects.get(id=project_id)
+            project = get_object_or_404(Project, pk=project_id, owner=request.user)
             add_thread_in_storage(ProjectThread, quantity, thread_id, 'project', project)
             return HttpResponseRedirect(reverse('threads:project_detail', args=[project_id]))
     else:
@@ -151,7 +153,7 @@ def update_thread_project(request, project_thread_id):
     """
     Страница изменения количества нитки в проекте.
     """
-    project_thread = get_object_or_404(ProjectThread, pk=project_thread_id)
+    project_thread = get_object_or_404(ProjectThread, pk=project_thread_id, project__owner=request.user)
 
     if request.method == 'POST':
         form = ThreadUpdateProjectForm(data=request.POST)
@@ -176,7 +178,7 @@ def delete_thread_project(request, project_thread_id):
     """
     Удаление нитки из проекта.
     """
-    project_thread = get_object_or_404(ProjectThread, pk=project_thread_id)
+    project_thread = get_object_or_404(ProjectThread, pk=project_thread_id, project__owner=request.user)
 
     if request.method == 'POST':
         project_thread.delete()

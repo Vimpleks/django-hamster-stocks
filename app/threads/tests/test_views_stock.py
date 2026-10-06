@@ -168,6 +168,21 @@ def test_update_thread_stock_post_success(logged_in_client, first_stock_thread, 
     ).exists()
 
 
+def test_update_thread_stock_user_cannot_update_another_users_project(logged_in_client, another_stock_thread):
+    # Arrange
+    client, user = logged_in_client
+    data = {
+        'quantity': 6.5,
+    }
+
+    # Act
+    response = client.post(reverse('threads:update_thread_stock',
+                           kwargs={'stock_thread_id': another_stock_thread.id}), data)
+
+    # Assert
+    assert response.status_code == 404
+
+
 def test_update_thread_stock_invalid_stock_thread_id_returns_404(logged_in_client):
     # Arrange
     client, user = logged_in_client
@@ -194,7 +209,19 @@ def test_delete_thread_stock_post_success(logged_in_client, first_stock_thread):
     assert not StockThread.objects.filter(id=first_stock_thread.id).exists()
 
 
-def test_delete_thread_stock_get_no_delete(logged_in_client, first_stock_thread):
+def test_delete_thread_stock_user_cannot_delete_another_users_project(logged_in_client, another_stock_thread):
+    # Arrange
+    client, user = logged_in_client
+
+    # Act
+    response = client.post(reverse('threads:delete_thread_stock',
+                           kwargs={'stock_thread_id': another_stock_thread.id}))
+
+    # Assert
+    assert response.status_code == 404
+
+
+def test_delete_thread_stock_method_get_no_delete(logged_in_client, first_stock_thread):
     # Arrange
     client, user = logged_in_client
 

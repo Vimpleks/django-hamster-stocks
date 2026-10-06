@@ -168,6 +168,21 @@ def test_update_thread_basket_post_success(logged_in_client, first_basket_thread
     ).exists()
 
 
+def test_update_thread_basket_user_cannot_update_another_users_project(logged_in_client, another_basket_thread):
+    # Arrange
+    client, user = logged_in_client
+    data = {
+        'quantity': 6.5,
+    }
+
+    # Act
+    response = client.post(reverse('threads:update_thread_basket',
+                           kwargs={'basket_thread_id': another_basket_thread.id}), data)
+
+    # Assert
+    assert response.status_code == 404
+
+
 def test_update_thread_basket_invalid_basket_thread_id_returns_404(logged_in_client):
     # Arrange
     client, user = logged_in_client
@@ -194,7 +209,19 @@ def test_delete_thread_basket_post_success(logged_in_client, first_basket_thread
     assert not BasketThread.objects.filter(id=first_basket_thread.id).exists()
 
 
-def test_delete_thread_basket_get_no_delete(logged_in_client, first_basket_thread):
+def test_delete_thread_basket_user_cannot_delete_another_users_project(logged_in_client, another_basket_thread):
+    # Arrange
+    client, user = logged_in_client
+
+    # Act
+    response = client.post(reverse('threads:delete_thread_basket',
+                           kwargs={'basket_thread_id': another_basket_thread.id}))
+
+    # Assert
+    assert response.status_code == 404
+
+
+def test_delete_thread_basket_method_get_no_delete(logged_in_client, first_basket_thread):
     # Arrange
     client, user = logged_in_client
 

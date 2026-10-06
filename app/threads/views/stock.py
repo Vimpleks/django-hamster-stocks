@@ -69,7 +69,7 @@ def update_thread_stock(request, stock_thread_id):
     """
     Страница изменения количества нитки в запасе.
     """
-    stock_thread = get_object_or_404(StockThread, pk=stock_thread_id)
+    stock_thread = get_object_or_404(StockThread, pk=stock_thread_id, stock__owner=request.user)
 
     if request.method == 'POST':
         form = ThreadUpdateStockForm(data=request.POST)
@@ -93,7 +93,7 @@ def delete_thread_stock(request, stock_thread_id):
     """
     Удаление нитки из запаса.
     """
-    stock_thread = get_object_or_404(StockThread, pk=stock_thread_id)
+    stock_thread = get_object_or_404(StockThread, pk=stock_thread_id, stock__owner=request.user)
 
     if request.method == 'POST':
         stock_thread.delete()

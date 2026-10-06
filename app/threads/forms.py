@@ -39,7 +39,6 @@ class ProjectForm(forms.ModelForm):
             'description',
             'designer',
             'status',
-            'owner',
         )
 
 

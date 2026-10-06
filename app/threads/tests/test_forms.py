@@ -66,19 +66,20 @@ def test_project_form_valid_create(user):
         'description': 'Похожи на норвежские домики',
         'designer': 'Наталья Юркевич',
         'status': 'kitted',
-        'owner': user,
     }
     form = ProjectForm(data=data)
 
+
     # Act
-    instance = form.save()
+    instance = form.save(commit=False)
+    instance.owner = user
+    instance.save()
 
     assert form.is_valid() is True
     assert instance.name == 'Акварельные домики'
     assert instance.description == 'Похожи на норвежские домики'
     assert instance.designer == 'Наталья Юркевич'
     assert instance.status == 'kitted'
-    assert instance.owner == user
 
 
 def test_valid_update(project, user):

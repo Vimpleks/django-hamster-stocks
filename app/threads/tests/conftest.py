@@ -38,6 +38,16 @@ def user(db):
 
 
 @pytest.fixture
+def another_user(db):
+    return User.objects.create_user(
+        username='another_user',
+        password='Ym.Gfcc2026',
+        first_name='Петр',
+        last_name='Иванов',
+    )
+
+
+@pytest.fixture
 def logged_in_client(client, user):
     client.login(username='testuser', password='Ym.Gfcc2026')
     return client, user
@@ -62,6 +72,16 @@ def some_stock_threads(stock, first_thread, second_thread):
 
 
 @pytest.fixture
+def another_stock(another_user):
+    return Stock.objects.create(owner=another_user)
+
+
+@pytest.fixture
+def another_stock_thread(another_stock, first_thread):
+    return StockThread.objects.create(stock=another_stock, thread=first_thread, quantity=1)
+
+
+@pytest.fixture
 def basket(user):
     return Basket.objects.create(owner=user)
 
@@ -80,6 +100,16 @@ def some_basket_threads(basket, first_thread, second_thread):
 
 
 @pytest.fixture
+def another_basket(another_user):
+    return Basket.objects.create(owner=another_user)
+
+
+@pytest.fixture
+def another_basket_thread(another_basket, first_thread):
+    return BasketThread.objects.create(basket=another_basket, thread=first_thread, quantity=1)
+
+
+@pytest.fixture
 def project(user):
     return Project.objects.create(
         name='Акварельные домики',
@@ -91,5 +121,21 @@ def project(user):
 
 
 @pytest.fixture
+def another_project(another_user, project):
+    return Project.objects.create(
+        name='Акварельные домики',
+        description='Похожи на норвежские домики',
+        designer='Наталья Юркевич',
+        status='kitted',
+        owner=another_user,
+    )
+
+
+@pytest.fixture
 def first_project_thread(project, first_thread):
     return ProjectThread.objects.create(project=project, thread=first_thread, quantity=1)
+
+
+@pytest.fixture
+def another_project_thread(another_project, first_thread):
+    return ProjectThread.objects.create(project=another_project, thread=first_thread, quantity=1)

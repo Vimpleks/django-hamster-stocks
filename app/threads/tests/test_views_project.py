@@ -72,6 +72,18 @@ def test_project_detail_unauthenticated_redirects(client, project):
     assert '/user/login' in response.url
 
 
+def test_project_detail_user_cannot_view_another_users_project(logged_in_client, another_project):
+    # Arrange
+    client, user = logged_in_client
+
+    # Act
+    response = client.get(reverse('threads:project_detail',
+                                  kwargs={'project_id': another_project.id}))
+
+    # Assert
+    assert response.status_code == 404
+
+
 def test_project_detail_invalid_project_id_returns_404(logged_in_client):
     # Arrange
     client, user = logged_in_client
@@ -195,6 +207,23 @@ def test_edit_project_unauthenticated_redirects(client, project):
     assert '/user/login' in response.url
 
 
+def test_edit_project_user_cannot_edit_another_users_project(logged_in_client, another_project):
+    # Arrange
+    client, user = logged_in_client
+
+    data = {
+        'name': 'Домики',
+        'status': 'complete',
+    }
+
+    # Act
+    response = client.post(reverse('threads:edit_project',
+                                  kwargs={'project_id': another_project.id}), data)
+
+    # Assert
+    assert response.status_code == 404
+
+
 def test_edit_project_invalid_project_id_returns_404(logged_in_client, user):
     # Arrange
     client, user = logged_in_client
@@ -220,7 +249,7 @@ def test_delete_project_post_success_delete(logged_in_client, project):
     assert not Project.objects.filter(id=project.id).exists()
 
 
-def test_delete_project_get_does_not_delete(logged_in_client, project):
+def test_delete_project_method_get_does_not_delete(logged_in_client, project):
     # Arrange
     client, user = logged_in_client
 
@@ -241,6 +270,18 @@ def test_delete_project_unauthenticated_redirects(client):
     # Assert
     assert response.status_code == 302
     assert '/user/login' in response.url
+
+
+def test_delete_project_user_cannot_delete_another_users_project(logged_in_client, another_project):
+    # Arrange
+    client, user = logged_in_client
+
+    # Act
+    response = client.post(reverse('threads:edit_project',
+                                  kwargs={'project_id': another_project.id}))
+
+    # Assert
+    assert response.status_code == 404
 
 
 def test_delete_project_invalid_project_id_returns_404(logged_in_client):
@@ -304,6 +345,22 @@ def test_add_thread_project_post_success(logged_in_client, manufacturer, second_
     ).exists()
 
 
+def test_add_thread_project_user_cannot_add_another_users_project(logged_in_client, manufacturer, second_thread, another_project):
+    # Arrange
+    client, user = logged_in_client
+    data = {
+        'thread': second_thread.id,
+        'quantity': 6.5,
+    }
+    url = reverse('threads:add_thread_project', kwargs={'manufacturer_slug': manufacturer.slug})
+
+    # Act
+    response = client.post(url, data=data, QUERY_STRING=f"project_id={another_project.id}", follow=False)
+
+    # Assert
+    assert response.status_code == 404
+
+
 def test_add_thread_project_invalid_slug_returns_404(logged_in_client):
     # Arrange
     client, user = logged_in_client
@@ -364,6 +421,21 @@ def test_update_thread_project_post_success(logged_in_client, first_project_thre
     ).exists()
 
 
+def test_update_thread_project_user_cannot_update_another_users_project(logged_in_client, another_project_thread):
+    # Arrange
+    client, user = logged_in_client
+    data = {
+        'quantity': 6.5,
+    }
+
+    # Act
+    response = client.post(reverse('threads:update_thread_project',
+                                   kwargs={'project_thread_id': another_project_thread.id}), data)
+
+    # Assert
+    assert response.status_code == 404
+
+
 def test_update_thread_project_invalid_project_thread_id_returns_404(logged_in_client):
     # Arrange
     client, user = logged_in_client
@@ -390,7 +462,7 @@ def test_delete_thread_project_post_success(logged_in_client, first_project_thre
     assert not ProjectThread.objects.filter(id=first_project_thread.id).exists()
 
 
-def test_delete_thread_project_get_no_delete(logged_in_client, first_project_thread):
+def test_delete_thread_project_method_get_no_delete(logged_in_client, first_project_thread):
     # Arrange
     client, user = logged_in_client
 
@@ -402,6 +474,18 @@ def test_delete_thread_project_get_no_delete(logged_in_client, first_project_thr
     assert response.status_code in (301, 302)
     assert reverse('threads:projects') in response.url
     assert ProjectThread.objects.filter(id=first_project_thread.id).exists()
+
+
+def test_delete_thread_project_user_cannot_delete_another_users_project(logged_in_client, another_project_thread):
+    # Arrange
+    client, user = logged_in_client
+
+    # Act
+    response = client.post(reverse('threads:delete_thread_project',
+                                   kwargs={'project_thread_id': another_project_thread.id}))
+
+    # Assert
+    assert response.status_code == 404
 
 
 def test_delete_thread_project_unauthenticated_redirects(client, first_project_thread):
