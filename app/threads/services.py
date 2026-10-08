@@ -2,8 +2,6 @@ from django.db.models import Count, Sum, Model
 from django.db.models.query import QuerySet
 from typing import Type
 
-from .models import Thread
-
 
 def get_quantity_color_in_storage(instance: Model, model: Type[Model], related_field: str) -> int:
     """

@@ -18,6 +18,7 @@ def test_thread_quantity_form_valid_data(first_thread):
     assert form.cleaned_data["quantity"] == 10.5
     assert form.cleaned_data["thread"] == first_thread
 
+
 def test_thread_quantity_form_rejects_invalid_thread(db):
     # Arrange
     data = {
@@ -31,7 +32,6 @@ def test_thread_quantity_form_rejects_invalid_thread(db):
     # Assert
     assert form.is_valid() is False
     assert 'thread' in form.errors
-
 
 
 def test_thread_quantity_form_rejects_negative_quantity(first_thread):

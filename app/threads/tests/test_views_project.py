@@ -218,7 +218,7 @@ def test_edit_project_user_cannot_edit_another_users_project(logged_in_client, a
 
     # Act
     response = client.post(reverse('threads:edit_project',
-                                  kwargs={'project_id': another_project.id}), data)
+                                   kwargs={'project_id': another_project.id}), data)
 
     # Assert
     assert response.status_code == 404
@@ -277,8 +277,8 @@ def test_delete_project_user_cannot_delete_another_users_project(logged_in_clien
     client, user = logged_in_client
 
     # Act
-    response = client.post(reverse('threads:edit_project',
-                                  kwargs={'project_id': another_project.id}))
+    response = client.post(reverse('threads:delete_project',
+                                   kwargs={'project_id': another_project.id}))
 
     # Assert
     assert response.status_code == 404

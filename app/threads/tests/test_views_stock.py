@@ -168,7 +168,7 @@ def test_update_thread_stock_post_success(logged_in_client, first_stock_thread, 
     ).exists()
 
 
-def test_update_thread_stock_user_cannot_update_another_users_project(logged_in_client, another_stock_thread):
+def test_update_thread_stock_user_cannot_update_another_users_stock(logged_in_client, another_stock_thread):
     # Arrange
     client, user = logged_in_client
     data = {
@@ -209,7 +209,7 @@ def test_delete_thread_stock_post_success(logged_in_client, first_stock_thread):
     assert not StockThread.objects.filter(id=first_stock_thread.id).exists()
 
 
-def test_delete_thread_stock_user_cannot_delete_another_users_project(logged_in_client, another_stock_thread):
+def test_delete_thread_stock_user_cannot_delete_another_users_stock(logged_in_client, another_stock_thread):
     # Arrange
     client, user = logged_in_client
 

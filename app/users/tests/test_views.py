@@ -19,7 +19,7 @@ def test_login_success_redirects(client, user):
     # Arrange
     data = {
         'username': user.username,
-        'password': 'Ym.Gfcc2026',
+        'password': 'test-password-123',
     }
 
     # Act

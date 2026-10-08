@@ -168,7 +168,7 @@ def test_update_thread_basket_post_success(logged_in_client, first_basket_thread
     ).exists()
 
 
-def test_update_thread_basket_user_cannot_update_another_users_project(logged_in_client, another_basket_thread):
+def test_update_thread_basket_user_cannot_update_another_users_basket(logged_in_client, another_basket_thread):
     # Arrange
     client, user = logged_in_client
     data = {
@@ -209,7 +209,7 @@ def test_delete_thread_basket_post_success(logged_in_client, first_basket_thread
     assert not BasketThread.objects.filter(id=first_basket_thread.id).exists()
 
 
-def test_delete_thread_basket_user_cannot_delete_another_users_project(logged_in_client, another_basket_thread):
+def test_delete_thread_basket_user_cannot_delete_another_users_basket(logged_in_client, another_basket_thread):
     # Arrange
     client, user = logged_in_client
 
