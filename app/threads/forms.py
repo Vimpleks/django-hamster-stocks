@@ -1,5 +1,5 @@
 from django import forms
-from threads.models import StockThread, BasketThread, Project, ProjectThread
+from threads.models import Thread, StockThread, BasketThread, Project, ProjectThread
 from threads.fields import PositiveQuantityField
 
 
@@ -8,7 +8,11 @@ class ThreadQuantityForm(forms.Form):
     Форма для добавления количества ниток в хранилище.
     """
     quantity = PositiveQuantityField()
-    thread = forms.IntegerField()
+    # thread = forms.IntegerField()
+    thread = forms.ModelChoiceField(
+        queryset=Thread.objects.all(),
+        empty_label='Выберите нитку',
+    )
 
 
 class ThreadUpdateStockForm(forms.ModelForm):

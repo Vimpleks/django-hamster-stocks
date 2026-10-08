@@ -43,21 +43,20 @@ def filter_by_field(queryset: QuerySet, filter_value: str, lookup_field: str) ->
     return queryset
 
 
-def add_thread_in_storage(storage: Type[Model], quantity: float, thread_id: int, lookup_field: str, filter_value: Model) -> None:
+def add_thread_in_storage(storage: Type[Model], quantity: float, thread: Model, lookup_field: str, filter_value: Model) -> None:
     """
     Функция добавляет нитку в хранилище. Если нитка в хранилище есть, то увеличивает ее количество на quantity.
 
     :param storage: модель связи хранилища с нитками (StockThread, BasketThread и т.п.)
     :param quantity: количество мотков нитки для добавления
-    :param thread_id: id нитки, которую надо добавить
+    :param thread: экземпляр модели нитки, которую надо добавить
     :param lookup_field: имя поля FK в модели связи хранилища с нитками (например, 'stock', 'basket')
     :param filter_value: экземпляр модели хранилища (Stock, Basket и т.п.)
     """
     try:
-        storage_thread = storage.objects.get(**{lookup_field: filter_value}, thread=thread_id)
+        storage_thread = storage.objects.get(**{lookup_field: filter_value}, thread=thread)
         quantity_add = storage_thread.quantity + quantity
         storage_thread.quantity = quantity_add
         storage_thread.save(update_fields=['quantity'])
     except storage.DoesNotExist:
-        thread = Thread.objects.get(id=thread_id)
         storage.objects.create(**{lookup_field: filter_value}, thread=thread, quantity=quantity)

@@ -65,7 +65,7 @@ def test_get_quantity_thread_in_storage_returns_correct_count_for_filled_stock(s
     assert result == 3.5
 
 
-def test_get_quantity_cthread_in_storage_empty_stock_returns_zero(stock):
+def test_get_quantity_thread_in_storage_empty_stock_returns_zero(stock):
     # Act
     result = get_quantity_thread_in_storage(
         instance=stock,
@@ -121,7 +121,7 @@ def test_add_thread_in_storage_creates_new_record_when_not_exists(stock, first_t
     add_thread_in_storage(
         storage=StockThread,
         quantity=3.5,
-        thread_id=first_thread.id,
+        thread=first_thread,
         lookup_field='stock',
         filter_value=stock,
     )
@@ -136,7 +136,7 @@ def test_add_thread_in_storage_increases_quantity_when_exists(stock, first_threa
     add_thread_in_storage(
         storage=StockThread,
         quantity=3.5,
-        thread_id=first_thread.id,
+        thread=first_thread,
         lookup_field='stock',
         filter_value=stock,
     )

@@ -131,10 +131,10 @@ def add_thread_project(request, manufacturer_slug):
     if request.method == 'POST':
         form = ThreadQuantityForm(data=request.POST)
         if form.is_valid():
-            thread_id = form.cleaned_data['thread']
+            thread = form.cleaned_data['thread']
             quantity = form.cleaned_data['quantity']
             project = get_object_or_404(Project, pk=project_id, owner=request.user)
-            add_thread_in_storage(ProjectThread, quantity, thread_id, 'project', project)
+            add_thread_in_storage(ProjectThread, quantity, thread, 'project', project)
             return HttpResponseRedirect(reverse('threads:project_detail', args=[project_id]))
     else:
         form = ThreadQuantityForm()

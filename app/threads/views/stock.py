@@ -47,10 +47,10 @@ def add_thread_stock(request, manufacturer_slug):
     if request.method == 'POST':
         form = ThreadQuantityForm(data=request.POST)
         if form.is_valid():
-            thread_id = form.cleaned_data['thread']
+            thread = form.cleaned_data['thread']
             quantity = form.cleaned_data['quantity']
             stock_user = Stock.objects.get(owner=request.user)
-            add_thread_in_storage(StockThread, quantity, thread_id, 'stock', stock_user)
+            add_thread_in_storage(StockThread, quantity, thread, 'stock', stock_user)
             return HttpResponseRedirect(reverse('threads:stock'))
     else:
         form = ThreadQuantityForm()

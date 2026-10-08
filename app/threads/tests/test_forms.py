@@ -3,7 +3,22 @@ from threads.forms import ThreadQuantityForm, ThreadUpdateStockForm, ThreadUpdat
 from threads.models import StockThread, BasketThread, ProjectThread
 
 
-def test_thread_quantity_form_valid_data():
+def test_thread_quantity_form_valid_data(first_thread):
+    # Arrange
+    data = {
+        "quantity": 10.5,
+        "thread": first_thread,
+    }
+
+    # Act
+    form = ThreadQuantityForm(data=data)
+
+    # Assert
+    assert form.is_valid() is True
+    assert form.cleaned_data["quantity"] == 10.5
+    assert form.cleaned_data["thread"] == first_thread
+
+def test_thread_quantity_form_rejects_invalid_thread(db):
     # Arrange
     data = {
         "quantity": 10.5,
@@ -14,16 +29,16 @@ def test_thread_quantity_form_valid_data():
     form = ThreadQuantityForm(data=data)
 
     # Assert
-    assert form.is_valid() is True
-    assert form.cleaned_data["quantity"] == 10.5
-    assert form.cleaned_data["thread"] == 2
+    assert form.is_valid() is False
+    assert 'thread' in form.errors
 
 
-def test_thread_quantity_form_rejects_negative_quantity():
+
+def test_thread_quantity_form_rejects_negative_quantity(first_thread):
     # Arrange
     data = {
         "quantity": -10,
-        "thread": 2,
+        "thread": first_thread,
     }
 
     # Act
@@ -34,11 +49,11 @@ def test_thread_quantity_form_rejects_negative_quantity():
     assert 'quantity' in form.errors
 
 
-def test_thread_quantity_form_rejects_zero_quantity():
+def test_thread_quantity_form_rejects_zero_quantity(first_thread):
     # Arrange
     data = {
         "quantity": 0,
-        "thread": 2,
+        "thread": first_thread,
     }
 
     # Act
@@ -49,11 +64,11 @@ def test_thread_quantity_form_rejects_zero_quantity():
     assert 'quantity' in form.errors
 
 
-def test_thread_quantity_form_rejects_very_small_quantity():
+def test_thread_quantity_form_rejects_very_small_quantity(first_thread):
     # Arrange
     data = {
         "quantity": 0.001,
-        "thread": 2,
+        "thread": first_thread,
     }
 
     # Act
@@ -109,7 +124,7 @@ def test_thread_update_stock_form_rejects_zero_quantity(first_stock_thread):
     assert 'quantity' in form.errors
 
 
-def test_thread_update_stock_form_rejects_zvery_small_quantity(first_stock_thread):
+def test_thread_update_stock_form_rejects_very_small_quantity(first_stock_thread):
     # Arrange
     data = {'quantity': 0.001}
 
@@ -169,7 +184,7 @@ def test_thread_update_basket_form_rejects_zero_quantity(first_basket_thread):
     assert 'quantity' in form.errors
 
 
-def test_thread_update_basket_form_rejects_very_smqll_quantity(first_basket_thread):
+def test_thread_update_basket_form_rejects_very_small_quantity(first_basket_thread):
     # Arrange
     data = {'quantity': 0.001}
 
