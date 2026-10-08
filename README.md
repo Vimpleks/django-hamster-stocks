@@ -413,8 +413,8 @@ ProjectThread
 ## 1. Клонировать репозиторий
 
 ```bash
-git clone <URL_РЕПОЗИТОРИЯ>
-cd <ИМЯ_РЕПОЗИТОРИЯ>
+git clone https://github.com/Vimpleks/django-hamster-stocks.git
+cd django-hamster-stocks
 ```
 
 Перейти в директорию приложения:
