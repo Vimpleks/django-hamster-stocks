@@ -132,7 +132,7 @@ def add_thread_project(request, manufacturer_slug):
         form = ThreadQuantityForm(data=request.POST)
         if form.is_valid():
             thread_id = form.cleaned_data['thread']
-            quantity = abs(form.cleaned_data['quantity'])
+            quantity = form.cleaned_data['quantity']
             project = get_object_or_404(Project, pk=project_id, owner=request.user)
             add_thread_in_storage(ProjectThread, quantity, thread_id, 'project', project)
             return HttpResponseRedirect(reverse('threads:project_detail', args=[project_id]))
@@ -158,7 +158,7 @@ def update_thread_project(request, project_thread_id):
     if request.method == 'POST':
         form = ThreadUpdateProjectForm(data=request.POST)
         if form.is_valid():
-            quantity = abs(form.cleaned_data['quantity'])
+            quantity = form.cleaned_data['quantity']
             project_thread.quantity = quantity
             project_thread.save(update_fields=['quantity'])
             return HttpResponseRedirect(reverse('threads:project_detail',

@@ -48,7 +48,7 @@ def add_thread_basket(request, manufacturer_slug):
         form = ThreadQuantityForm(data=request.POST)
         if form.is_valid():
             thread_id = form.cleaned_data['thread']
-            quantity = abs(form.cleaned_data['quantity'])
+            quantity = form.cleaned_data['quantity']
             basket_user = Basket.objects.get(owner=request.user)
             add_thread_in_storage(BasketThread, quantity, thread_id, 'basket', basket_user)
             return HttpResponseRedirect(reverse('threads:basket'))
@@ -74,7 +74,7 @@ def update_thread_basket(request, basket_thread_id):
     if request.method == 'POST':
         form = ThreadUpdateBasketForm(data=request.POST)
         if form.is_valid():
-            quantity = abs(form.cleaned_data['quantity'])
+            quantity = form.cleaned_data['quantity']
             basket_thread.quantity = quantity
             basket_thread.save(update_fields=['quantity'])
             return HttpResponseRedirect(reverse('threads:basket'))

@@ -48,7 +48,7 @@ def add_thread_stock(request, manufacturer_slug):
         form = ThreadQuantityForm(data=request.POST)
         if form.is_valid():
             thread_id = form.cleaned_data['thread']
-            quantity = abs(form.cleaned_data['quantity'])
+            quantity = form.cleaned_data['quantity']
             stock_user = Stock.objects.get(owner=request.user)
             add_thread_in_storage(StockThread, quantity, thread_id, 'stock', stock_user)
             return HttpResponseRedirect(reverse('threads:stock'))
@@ -74,7 +74,7 @@ def update_thread_stock(request, stock_thread_id):
     if request.method == 'POST':
         form = ThreadUpdateStockForm(data=request.POST)
         if form.is_valid():
-            quantity = abs(form.cleaned_data['quantity'])
+            quantity = form.cleaned_data['quantity']
             stock_thread.quantity = quantity
             stock_thread.save(update_fields=['quantity'])
             return HttpResponseRedirect(reverse('threads:stock'))
