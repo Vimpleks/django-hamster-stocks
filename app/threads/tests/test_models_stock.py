@@ -65,3 +65,30 @@ def test_stock_thread_unique(first_stock_thread, stock, first_thread):
     # Assert
     with pytest.raises(IntegrityError):
         StockThread.objects.create(stock=stock, thread=first_thread, quantity=2)
+
+
+def test_stock_thread_rejects_negative_quantity(stock, first_thread):
+    with pytest.raises(IntegrityError):
+        StockThread.objects.create(
+            stock=stock,
+            thread=first_thread,
+            quantity=-10,
+        )
+
+
+def test_stock_thread_rejects_zero_quantity(stock, first_thread):
+    with pytest.raises(IntegrityError):
+        StockThread.objects.create(
+            stock=stock,
+            thread=first_thread,
+            quantity=0,
+        )
+
+
+def test_stock_thread_rejects_very_small_quantity(stock, first_thread):
+    with pytest.raises(IntegrityError):
+        StockThread.objects.create(
+            stock=stock,
+            thread=first_thread,
+            quantity=0.001,
+        )

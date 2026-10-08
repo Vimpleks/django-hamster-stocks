@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Q
 from django.contrib.auth.models import User
 
 from .threads import Thread
@@ -52,5 +53,9 @@ class ProjectThread(models.Model):
             models.UniqueConstraint(
                 fields=['project', 'thread'],
                 name='unique_project_thread',
+            ),
+            models.CheckConstraint(
+                condition=Q(quantity__gte=0.01),
+                name='project_thread_quantity_positive',
             )
         ]

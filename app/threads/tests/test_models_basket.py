@@ -65,3 +65,30 @@ def test_basket_thread_unique(first_basket_thread, basket, first_thread):
     # Assert
     with pytest.raises(IntegrityError):
         BasketThread.objects.create(basket=basket, thread=first_thread, quantity=2)
+
+
+def test_basket_thread_rejects_negative_quantity(basket, first_thread):
+    with pytest.raises(IntegrityError):
+        BasketThread.objects.create(
+            basket=basket,
+            thread=first_thread,
+            quantity=-10,
+        )
+
+
+def test_basket_thread_rejects_zero_quantity(basket, first_thread):
+    with pytest.raises(IntegrityError):
+        BasketThread.objects.create(
+            basket=basket,
+            thread=first_thread,
+            quantity=0,
+        )
+
+
+def test_basket_thread_rejects_very_small_quantity(basket, first_thread):
+    with pytest.raises(IntegrityError):
+        BasketThread.objects.create(
+            basket=basket,
+            thread=first_thread,
+            quantity=0.001,
+        )

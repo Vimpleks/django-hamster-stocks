@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Q
 from django.contrib.auth.models import User
 
 from .threads import Thread
@@ -37,5 +38,9 @@ class StockThread(models.Model):
             models.UniqueConstraint(
                 fields=['stock', 'thread'],
                 name='unique_stock_thread',
+            ),
+            models.CheckConstraint(
+                condition=Q(quantity__gte=0.01),
+                name='stock_thread_quantity_positive',
             )
         ]

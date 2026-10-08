@@ -74,7 +74,7 @@ def test_project_thread_thread_relationship(first_project_thread, first_thread):
     assert first_project_thread.thread == first_thread
 
 
-def test_project_thread_sproject_cascade_delete(first_project_thread, project):
+def test_project_thread_project_cascade_delete(first_project_thread, project):
     # Act
     project.delete()
 
@@ -94,3 +94,30 @@ def test_project_thread_unique(first_project_thread, project, first_thread):
     # Assert
     with pytest.raises(IntegrityError):
         ProjectThread.objects.create(project=project, thread=first_thread, quantity=2)
+
+
+def test_project_thread_rejects_negative_quantity(project, first_thread):
+    with pytest.raises(IntegrityError):
+        ProjectThread.objects.create(
+            project=project,
+            thread=first_thread,
+            quantity=-10,
+        )
+
+
+def test_project_thread_rejects_zero_quantity(project, first_thread):
+    with pytest.raises(IntegrityError):
+        ProjectThread.objects.create(
+            project=project,
+            thread=first_thread,
+            quantity=0,
+        )
+
+
+def test_project_thread_rejects_very_small_quantity(project, first_thread):
+    with pytest.raises(IntegrityError):
+        ProjectThread.objects.create(
+            project=project,
+            thread=first_thread,
+            quantity=0.001,
+        )
