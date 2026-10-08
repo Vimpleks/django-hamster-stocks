@@ -27,6 +27,33 @@
 Каждый пользователь работает только со своими запасами, корзиной и проектами.
 
 ---
+## 📸 Скриншоты
+
+### Главная страница
+
+<p align="center">
+  <img src="screenshots/main.png" alt="Главная страница" width="80%">
+</p>
+
+### Каталог ниток
+
+<p align="center">
+  <img src="screenshots/threads.png" alt="Каталог ниток" width="80%">
+</p>
+
+### Запасы и список покупок
+
+<p align="center">
+  <img src="screenshots/stock.png" alt="Запасы ниток" width="48%">
+  <img src="screenshots/basket.png" alt="Список покупок" width="48%">
+</p>
+
+### Вышивальный проект
+
+<p align="center">
+  <img src="screenshots/project.png" alt="Вышивальный проект" width="80%">
+</p>
+---
 
 ## 🛠 Стек
 
@@ -689,13 +716,9 @@ diagramm_hamster/
 
 - добавить REST API на Django REST Framework;
 - добавить Docker и Docker Compose;
-- настроить CI/CD;
-- добавить полноценное покрытие и отчёты coverage;
 - добавить поиск по нескольким параметрам;
-- добавить историю изменения запасов;
 - добавить импорт справочника ниток;
-- добавить экспорт данных;
-- улучшить production deployment.
+- добавить экспорт списка покупок.
 
 ---
 
