@@ -544,17 +544,6 @@ poetry run python manage.py loaddata fixtures/threads/manufacturer.json
 poetry run python manage.py loaddata fixtures/threads/thread.json
 ```
 
-При необходимости можно загрузить остальные демонстрационные данные:
-
-```bash
-poetry run python manage.py loaddata fixtures/threads/stock.json
-poetry run python manage.py loaddata fixtures/threads/stockthread.json
-poetry run python manage.py loaddata fixtures/threads/basket.json
-poetry run python manage.py loaddata fixtures/threads/basketthread.json
-poetry run python manage.py loaddata fixtures/threads/project.json
-poetry run python manage.py loaddata fixtures/threads/projectthread.json
-```
-
 ---
 
 ## 8. Создать суперпользователя
