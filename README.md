@@ -93,8 +93,9 @@
 
 ### Инструменты
 
-- **Poetry**
-- `python-dotenv`
+- **Poetry** — управление зависимостями
+- **Docker** и **Docker Compose** — запуск приложения и PostgreSQL в контейнерах
+- `python-dotenv` — загрузка переменных окружения
 - Pillow
 - Django Debug Toolbar
 - **Flake8**
@@ -147,7 +148,10 @@ app/
 ├── manage.py
 ├── pyproject.toml
 ├── poetry.lock
-└── pytest.ini
+├── pytest.ini
+├── Dockerfile
+├── compose.yaml
+└── .dockerignore
 ```
 
 ### Разделение ответственности
@@ -352,6 +356,8 @@ hamster_stocks/settings/
 
 Секретные данные загружаются из переменных окружения.
 
+**Примечание:** Docker Compose в этом README предназначен для локального запуска и демонстрации проекта. Он использует сервер разработки Django, а не production-конфигурацию.
+
 ---
 
 ## 🧩 Валидация количества ниток
@@ -438,22 +444,123 @@ ProjectThread
 
 # 🚀 Установка и запуск
 
-## 1. Клонировать репозиторий
+Для быстрого запуска рекомендуется использовать **Docker Compose**. Он запускает Django и PostgreSQL в контейнерах, поэтому отдельно устанавливать Python, Poetry и PostgreSQL на компьютере не требуется.
 
-```bash
-git clone https://github.com/Vimpleks/django-hamster-stocks.git
-cd django-hamster-stocks
-```
+Доступны два варианта запуска:
 
-Перейти в директорию приложения:
+- Docker Compose — рекомендуемый вариант для быстрого знакомства с проектом;
 
-```bash
-cd app
-```
+- локальная установка — для разработки без Docker.
 
 ---
 
-## 2. Установить Poetry
+## Вариант 1. Запуск через Docker Compose
+
+### Требования
+
+- Git;
+
+- Docker Desktop для Windows/macOS либо Docker Engine и Docker Compose для Linux.
+
+### 1. Клонировать репозиторий
+
+```bash
+git clone https://github.com/Vimpleks/django-hamster-stocks.git
+cd django-hamster-stocks/app
+```
+
+### 2. Создать файл окружения
+
+Скопируйте пример файла:
+
+```bash
+cp .env.example .env
+```
+
+В Windows можно создать копию .env.example с именем .env вручную.
+
+Укажите собственные значения для SECRET_KEY и DB_PASSWORD. Пример настроек для Docker Compose:
+
+```env
+ALLOWED_HOSTS=localhost,127.0.0.1
+
+SECRET_KEY=your-secret-key
+DB_NAME=hamster_stocks
+DB_USER=postgres
+DB_PASSWORD=your-database-password
+DB_HOST=db
+DB_PORT=5432
+```
+
+**Важно:** при запуске через Compose значение DB_HOST=db — это имя сервиса PostgreSQL внутри сети Docker. При локальном запуске без Docker обычно используется DB_HOST=localhost.
+
+### 3. Собрать и запустить приложение
+
+Из каталога app/ выполните:
+```bash
+docker compose config
+docker compose up --build
+```
+При первом запуске Docker соберёт образ, запустит PostgreSQL, дождётся готовности базы данных, применит существующие миграции и запустит Django.
+
+Откройте приложение по адресу:
+
+```text
+http://localhost:8000/
+```
+
+Чтобы запустить контейнеры в фоновом режиме:
+
+```bash
+docker compose up --build -d
+```
+Посмотреть логи Django:
+```bash
+docker compose logs -f app
+```
+Остановить контейнеры:
+```bash
+docker compose down
+```
+
+### 4. Загрузить справочник ниток
+
+После запуска приложения в отдельном терминале, находясь в каталоге app/, выполните:
+
+```bash
+docker compose exec app python manage.py loaddata fixtures/threads/manufacturer.json
+docker compose exec app python manage.py loaddata fixtures/threads/thread.json
+```
+Команды загружают справочник производителей и ниток. Выполняйте их один раз для пустой базы данных.
+
+### 5. Создать администратора
+
+docker compose exec app python manage.py createsuperuser
+
+После этого можно войти в административную панель по адресу http://localhost:8000/admin/.
+
+**Примечание**: Разделы "Список покупок" и "Коробка с нитками" не доступны для администратора, чтобы ими воспользоваться зарегистрируйте обычного пользователя "Войти" - "Создать аккаунт"
+
+---
+
+## Вариант 2. Локальная установка без Docker
+
+### Требования
+
+- Python 3.14;
+
+- Poetry;
+
+- PostgreSQL.
+
+1. Клонировать репозиторий
+
+```bash
+git clone https://github.com/Vimpleks/django-hamster-stocks.git
+cd django-hamster-stocks/app
+```
+
+### 2. Установить Poetry
 
 Если Poetry ещё не установлен, установите его согласно официальной документации.
 
@@ -463,9 +570,7 @@ cd app
 poetry --version
 ```
 
----
-
-## 3. Установить зависимости
+### 3. Установить зависимости
 
 ```bash
 poetry install
@@ -473,9 +578,7 @@ poetry install
 
 Poetry установит зависимости проекта из `pyproject.toml` и `poetry.lock`.
 
----
-
-## 4. Создать PostgreSQL database
+### 4. Создать PostgreSQL database
 
 Создайте базу данных PostgreSQL, например:
 
@@ -485,9 +588,8 @@ createdb hamster_stocks
 
 При необходимости базу можно создать через `psql` или любой графический клиент PostgreSQL.
 
----
 
-## 5. Настроить переменные окружения
+### 5. Настроить переменные окружения
 
 В директории `app` находится файл:
 
@@ -516,19 +618,13 @@ DB_HOST=localhost
 DB_PORT=5432
 ```
 
-> Файл `.env` не должен добавляться в Git.
-
----
-
-## 6. Применить миграции
+### 6. Применить миграции
 
 ```bash
 poetry run python manage.py migrate
 ```
 
----
-
-## 7. Загрузить тестовые данные
+### 7. Загрузить тестовые данные
 
 В проекте предусмотрены Django fixtures.
 
@@ -544,28 +640,13 @@ poetry run python manage.py loaddata fixtures/threads/manufacturer.json
 poetry run python manage.py loaddata fixtures/threads/thread.json
 ```
 
-При необходимости можно загрузить остальные демонстрационные данные:
-
-```bash
-poetry run python manage.py loaddata fixtures/threads/stock.json
-poetry run python manage.py loaddata fixtures/threads/stockthread.json
-poetry run python manage.py loaddata fixtures/threads/basket.json
-poetry run python manage.py loaddata fixtures/threads/basketthread.json
-poetry run python manage.py loaddata fixtures/threads/project.json
-poetry run python manage.py loaddata fixtures/threads/projectthread.json
-```
-
----
-
-## 8. Создать суперпользователя
+### 8. Создать суперпользователя
 
 ```bash
 poetry run python manage.py createsuperuser
 ```
 
----
-
-## 9. Запустить сервер
+### 9. Запустить сервер
 
 ```bash
 poetry run python manage.py runserver
@@ -582,6 +663,8 @@ http://127.0.0.1:8000/
 ```text
 http://127.0.0.1:8000/admin/
 ```
+
+**Примечание**: Разделы "Список покупок" и "Коробка с нитками" не доступны для администратора, чтобы ими воспользоваться зарегистрируйте обычного пользователя "Войти" - "Создать аккаунт"
 
 ---
 
@@ -603,6 +686,12 @@ poetry run pytest -q
 
 ```bash
 poetry run pytest --cov
+```
+
+При запущенном Docker Compose тесты можно выполнить внутри контейнера приложения:
+
+```bash
+docker compose exec app pytest -v
 ```
 
 Тесты находятся в:
@@ -695,6 +784,13 @@ users/tests/
 - уникальные ограничения;
 - проверки данных на уровне БД.
 
+### Docker
+
+- создание образа приложения с помощью Dockerfile;
+- запуск Django и PostgreSQL через Docker Compose;
+- передача конфигурации через переменные окружения;
+- проверка готовности базы данных с помощью healthcheck.
+
 ---
 
 # 📁 Дополнительные материалы
@@ -705,11 +801,6 @@ users/tests/
 diagramm_hamster/
 ```
 
-Она представлена в форматах:
-
-- `.drawio`
-- `.pdf`
-
 ---
 
 # 🔮 Возможные дальнейшие улучшения
@@ -717,7 +808,6 @@ diagramm_hamster/
 Проект можно расширять в следующих направлениях:
 
 - добавить REST API на Django REST Framework;
-- добавить Docker и Docker Compose;
 - добавить поиск по нескольким параметрам;
 - добавить импорт справочника ниток;
 - добавить экспорт списка покупок.
